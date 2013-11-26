@@ -42,9 +42,14 @@ function showResults(venues) {
 	$("#search-results").html(" ");
 	for(var i = 0; i < venues.length; i++) {
 		var name = venues[i].name;
-		var address = venues[i].location.address;
+		var address = "";
+		if(venues[i].location.address) {
+			address += venues[i].location.address;
+		} else {
+			address += "(No address provided)";
+		}
 		if(venues[i].location.crossStreet) {
-			address += "<br>(" + venues[i].location.crossStreet + ")";
+			address += "<br>Cross Street: " + venues[i].location.crossStreet + "";
 		}
 		
 		$("#search-results").append(buildResultPanel(name, address));
