@@ -2,3 +2,14 @@
 body {
 	padding-top: 50px;
 }
+
+/* Itinerary build page */
+.left-two-thirds {
+	float: left;
+	width: 60%;
+}
+
+.right-one-third {
+	float: right;
+	width: 30%;
+}

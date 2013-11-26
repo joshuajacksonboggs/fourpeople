@@ -1,10 +1,17 @@
 /** Javascript functionality for the itinerary builder page */
 $(function() {
-	$("#holder").html("jQuery ready");
-	var urlToSend = "";
+var baseURL = "https://api.foursquare.com/v2/venues/search?client_id=5CYXNIKAOPTKCKIGHNPPJ3DQJBY4IPL0XJL140TLN121U514&client_secret=RPZTJ5NHBY0L213UKWP3T3DF2QVUXNKMW34FRJOUZFDIFNDM&v=20131124";
+
+// Gathers parameters and sends search request to Foursquare API
+$("#searchForVenues").click(function() {
+	//TODO: error check on entries
+	var query = $("#query").val();
+	var location = $("#location").val();
+	
+	var urlToSend = baseURL + "&query=" + encodeURIComponent(query) + "&near=" + encodeURIComponent(location);
+	console.log("Sending request: " + urlToSend);
 	$.ajax({
-	  //url: "https://api.foursquare.com/v2/venues/4abf1d17f964a520d39020e3?client_id=5CYXNIKAOPTKCKIGHNPPJ3DQJBY4IPL0XJL140TLN121U514&client_secret=RPZTJ5NHBY0L213UKWP3T3DF2QVUXNKMW34FRJOUZFDIFNDM&v=20131124",
-	  url: "https://api.foursquare.com/v2/venues/search?client_id=5CYXNIKAOPTKCKIGHNPPJ3DQJBY4IPL0XJL140TLN121U514&client_secret=RPZTJ5NHBY0L213UKWP3T3DF2QVUXNKMW34FRJOUZFDIFNDM&v=20131124&near=New%20York&query=MoMa",
+	  url: urlToSend,
 	  beforeSend: function() {
 		// can put something here
 	  }
@@ -15,4 +22,18 @@ $(function() {
 		  $("#holder").html("<pre><code>" + JSON.stringify(data, null, 2) + "</code></pre>");
 		}
 	  });
+});
+
+// Next two functions allow user to search by hitting ENTER
+$("#query").keypress(function(e){
+	if(e.which == 13) {
+		$("#searchForVenues").click();
+	}
+});
+$("#location").keypress(function(e){
+	if(e.which == 13) {
+		$("#searchForVenues").click();
+	}
+});
+
 });
