@@ -41,8 +41,21 @@ $("#location").keypress(function(e){
 function showResults(venues) {
 	$("#search-results").html(" ");
 	for(var i = 0; i < venues.length; i++) {
-		$("#search-results").append(venues[i]["name"] + "<br>");
+		var name = venues[i]["name"];
+		$("#search-results").append(buildResultPanel(name, name));
 	}
+}
+function buildResultPanel(panelTitle, panelContent) {
+	var html = 
+		'<div class="panel panel-primary">' +
+			'<div class="panel-heading">' + 
+              '<h3 class="panel-title">' + panelTitle + '</h3>' +
+            '</div>' +
+            '<div class="panel-body">' +
+              panelContent +
+            '</div>' +
+          '</div>';
+	return html;
 }
 
 });
