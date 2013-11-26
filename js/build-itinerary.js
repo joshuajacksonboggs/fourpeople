@@ -41,10 +41,17 @@ $("#location").keypress(function(e){
 function showResults(venues) {
 	$("#search-results").html(" ");
 	for(var i = 0; i < venues.length; i++) {
-		var name = venues[i]["name"];
-		$("#search-results").append(buildResultPanel(name, name));
+		var name = venues[i].name;
+		var address = venues[i].location.address;
+		if(venues[i].location.crossStreet) {
+			address += "<br>(" + venues[i].location.crossStreet + ")";
+		}
+		
+		$("#search-results").append(buildResultPanel(name, address));
 	}
 }
+
+// Builds the panel for a single search result
 function buildResultPanel(panelTitle, panelContent) {
 	var html = 
 		'<div class="panel panel-primary">' +
