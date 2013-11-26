@@ -3,6 +3,21 @@ body {
 	padding-top: 50px;
 }
 
+#footer {
+	padding-top: 100px;
+	text-align: center;
+	color: #333;
+	font-weight: bold;
+}
+
+#foursquare-logo {
+	height: 30px;
+}
+
+#foursquare-logo:hover {
+	opacity: 0.75;
+}
+
 /* Itinerary build page */
 .left-two-thirds {
 	float: left;
