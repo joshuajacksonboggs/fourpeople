@@ -1,25 +1,13 @@
 <html>
 <head>
 	<title>Testing</title>
-	<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
 </head>
 <body>
 	<div id="holder">Testing</div>
-	<script type="text/javascript">
-	$("#holder").html("jQuery ready");
-	var urlToSend = "";
-	$.ajax({
-	  url: "https://api.foursquare.com/v2/venues/4abf1d17f964a520d39020e3?client_id=5CYXNIKAOPTKCKIGHNPPJ3DQJBY4IPL0XJL140TLN121U514&client_secret=RPZTJ5NHBY0L213UKWP3T3DF2QVUXNKMW34FRJOUZFDIFNDM&v=20131124",
-	  beforeSend: function() {
-		// can put something here
-	  }
-	})
-	  .done(function( data ) {
-		if ( console && console.log ) {
-		  //console.log("Response: " + JSON.stringify(data));
-		  $("#holder").html("<pre><code>" + JSON.stringify(data, null, 2) + "</code></pre>");
-		}
-	  });
-	</script>
 </body>
+
+<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<!-- load local version of jQuery if cdn fails -->
+<script>window.jQuery || document.write('<script src="js/jquery-1.10.2.min.js"></script>')</script>
+<script type="text/javascript" src="js/build-itinerary.js"></script>
 </html>
