@@ -10,18 +10,19 @@ $("#searchForVenues").click(function() {
 	
 	var urlToSend = baseURL + "&query=" + encodeURIComponent(query) + "&near=" + encodeURIComponent(location);
 	console.log("Sending request: " + urlToSend);
+	
+	// send request
 	$.ajax({
-	  url: urlToSend,
-	  beforeSend: function() {
-		// can put something here
-	  }
-	})
-	  .done(function( data ) {
+	  url: urlToSend
+	}).done(function( data ) {
+		// display results to user
+		showResults(data.response.venues);
+		
+		// log response for debugging
 		if ( console && console.log ) {
-		  //console.log("Response: " + JSON.stringify(data));
-		  $("#holder").html("<pre><code>" + JSON.stringify(data, null, 2) + "</code></pre>");
+		  console.log("Response: " + data);
 		}
-	  });
+	});
 });
 
 // Next two functions allow user to search by hitting ENTER
@@ -35,5 +36,33 @@ $("#location").keypress(function(e){
 		$("#searchForVenues").click();
 	}
 });
+
+// Displays results for user
+function showResults(venues) {
+	$("#search-results").html(" ");
+	for(var i = 0; i < venues.length; i++) {
+		var name = venues[i].name;
+		var address = venues[i].location.address;
+		if(venues[i].location.crossStreet) {
+			address += "<br>(" + venues[i].location.crossStreet + ")";
+		}
+		
+		$("#search-results").append(buildResultPanel(name, address));
+	}
+}
+
+// Builds the panel for a single search result
+function buildResultPanel(panelTitle, panelContent) {
+	var html = 
+		'<div class="panel panel-primary">' +
+			'<div class="panel-heading">' + 
+              '<h3 class="panel-title">' + panelTitle + '</h3>' +
+            '</div>' +
+            '<div class="panel-body">' +
+              panelContent +
+            '</div>' +
+          '</div>';
+	return html;
+}
 
 });
