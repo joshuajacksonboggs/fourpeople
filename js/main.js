@@ -1,5 +1,6 @@
 /** Javascript functionality for all pages (e.g., load navbar) */
 $(function(){
+	//load navbar
 	var navbarHTML = '<div class="container">' + 
 		'<div class="navbar-header">' +
           '<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">' + 
