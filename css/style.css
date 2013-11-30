@@ -3,6 +3,7 @@ body {
 	padding-top: 50px;
 }
 
+
 /* Landing */
 
 body.landing {
@@ -89,11 +90,27 @@ footer {
 	background-size: 250px;
 	background-color: black;
 	height: 50px;
+
+#footer {
+	padding-top: 100px;
+	padding-bottom: 20px;
+	text-align: center;
+	color: #333;
+	font-weight: bold;
+}
+
+#foursquare-logo {
+	height: 30px;
+}
+
+#foursquare-logo:hover {
+	opacity: 0.75;
 }
 
 /* Itinerary build page */
 .left {
 	float: left;
+	width: 65%;
 }
 
 .right {
@@ -106,4 +123,24 @@ footer {
 
 .one-third {
 	width: 30%;
+}
+
+#error-holder {
+	display: none;
+}
+
+.panel-text-info {
+	float: left;
+	width: 50%;
+}
+
+.panel-map {
+	float: left;
+	width: 30%;
+	height: 100px;
+}
+
+.panel-add-button {
+	float: right;
+	width: 15%;
 }

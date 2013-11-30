@@ -20,4 +20,9 @@ $(function(){
         '</div><!--/.nav-collapse -->' +
       '</div>';
 	$(".navbar").html(navbarHTML);
+	
+	//load footer
+	var footerHTML = '<hr>Powered by &nbsp;' +
+		'<a href="http://www.foursquare.com" target="_blank"><img src="images/foursquare-logo.png" id="foursquare-logo" /></a>';
+	$("#footer").html(footerHTML);
 });
