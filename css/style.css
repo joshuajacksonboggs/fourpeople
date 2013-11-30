@@ -3,6 +3,95 @@ body {
 	padding-top: 50px;
 }
 
+
+/* Landing */
+
+body.landing {
+	background-image: url('../assets/New-York-City-Skyline.jpg');
+	background-size: 100%;
+}
+
+.white-container {
+	background-color: rgba(255, 255, 255, 0.5);
+	width: 95%;
+	height: 450px;
+	margin-left: auto;
+	margin-right: auto;
+	border-radius: 15px;
+	padding-top: 50px;
+}
+
+div.tagline {
+	margin-bottom: 50px;
+}
+
+.tagline h1 {
+	text-align: center;
+	text-transform: uppercase;
+	font-weight: 500;
+	font-size: 60px;
+	letter-spacing: 4px;
+	color: black;
+}
+
+.tagline h2 {
+	text-align: center;
+	font-size: 28px;
+	font-style: italic;
+	font-weight: 200;
+	color: black;
+}
+
+.landing div.left{
+	margin-left: 40px;
+	height: 300px;
+	border-right: 1px solid black;
+	padding-right: 10px;
+}
+
+.landing div.right {
+	margin-right: 40px;
+}
+
+.landing input {
+	display: inline-block;
+	width: 50%;
+}
+
+.landing input.input-lg {
+	width: 75%;
+}
+
+button {
+	display: inline-block;
+	font-size: small;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	margin: 0px 10px 0px 10px;
+}
+
+.landing p {
+	font-style: italic;
+	font-size: 18px;
+}
+
+footer {
+	width: 100%;
+	height: 7%;
+	background: black;
+	position: fixed;
+	bottom: 0px;
+}
+
+.powered-by-foursquare {
+	background-image: url('../assets/poweredByFoursquare_white.png');
+	background-repeat: no-repeat;
+	background-size: 250px;
+	background-color: black;
+	height: 50px;
+}
+
 #footer {
 	padding-top: 100px;
 	padding-bottom: 20px;
@@ -20,13 +109,20 @@ body {
 }
 
 /* Itinerary build page */
-.left-two-thirds {
+.left {
 	float: left;
 	width: 65%;
 }
 
-.right-one-third {
+.right {
 	float: right;
+}
+
+.two-thirds {
+	width: 60%;
+}
+
+.one-third {
 	width: 30%;
 }
 
