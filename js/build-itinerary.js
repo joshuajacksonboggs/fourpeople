@@ -96,7 +96,7 @@ function buildResultPanel(number, name, address, id) {
             '<div class="panel-body">' +
               '<div class="panel-text-info">' + address + '</div>' +
 			  '<div class="panel-map" id="panel-map-' + number +'"></div>' +
-			  '<div class="panel-add-button btn btn-lg btn-primary"><span class="glyphicon glyphicon-plus"></span><br>Add<br>'+
+			  '<div class="panel-add-button btn btn-lg btn-primary">+<br>Add<br>'+
 			  '<span class="hidden-venue-id">' + id + '</span></div>' +
             '</div>' +
           '</div>';
@@ -106,6 +106,7 @@ function buildResultPanel(number, name, address, id) {
 // TODO
 // When add button clicked
 $(document).on('click', '.panel-add-button', function(){
+	//console.log($(event.target).children("span").text());
 	var venueID = $(event.target).children("span.hidden-venue-id").text();
 	alert("Venue ID: " + venueID);
 });
