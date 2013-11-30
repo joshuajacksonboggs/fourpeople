@@ -15,12 +15,17 @@ $("#searchForVenues").click(function() {
 	$.ajax({
 	  url: urlToSend
 	}).done(function( data ) {
-		// display results to user
-		showResults(data.response.venues);
+		if(!data.response.venues[0]) {
+			// display no-results error
+			$("#search-results").html("Sorry, we couldn't find any results.");
+		} else {
+			// display results to user
+			showResults(data.response.venues);
+		}
 		
 		// log response for debugging
 		if ( console && console.log ) {
-		  console.log("Response: " + data);
+		  console.log(data);
 		}
 	});
 });
@@ -39,6 +44,7 @@ $("#location").keypress(function(e){
 
 // Displays results for user
 function showResults(venues) {
+	//TODO: handle no results
 	$("#search-results").html(" ");
 	for(var i = 0; i < venues.length; i++) {
 		var name = venues[i].name;
@@ -51,20 +57,22 @@ function showResults(venues) {
 		if(venues[i].location.crossStreet) {
 			address += "<br>Cross Street: " + venues[i].location.crossStreet + "";
 		}
-		
-		$("#search-results").append(buildResultPanel(name, address));
+		var id = venues[i].id;
+		$("#search-results").append(buildResultPanel(name, address, id));
 	}
 }
 
 // Builds the panel for a single search result
-function buildResultPanel(panelTitle, panelContent) {
+function buildResultPanel(name, address, id) {
 	var html = 
 		'<div class="panel panel-primary">' +
 			'<div class="panel-heading">' + 
-              '<h3 class="panel-title">' + panelTitle + '</h3>' +
+              '<h3 class="panel-title">' + name + '</h3>' +
             '</div>' +
             '<div class="panel-body">' +
-              panelContent +
+              '<div class="panel-text-info">' + address + '</div>' +
+			  '<div class="panel-map">Map here</div>' +
+			  '<div class="panel-add-button">Button here<br>id:' + id + '</div>' +
             '</div>' +
           '</div>';
 	return html;

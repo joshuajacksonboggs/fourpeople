@@ -29,3 +29,18 @@ body {
 	float: right;
 	width: 30%;
 }
+
+.panel-text-info {
+	float: left;
+	width: 50%;
+}
+
+.panel-map {
+	float: left;
+	width: 30%;
+}
+
+.panel-add-button {
+	float: right;
+	width: 15%;
+}
