@@ -30,6 +30,10 @@ body {
 	width: 30%;
 }
 
+#error-holder {
+	display: none;
+}
+
 .panel-text-info {
 	float: left;
 	width: 50%;
