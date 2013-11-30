@@ -1,0 +1,91 @@
+var london = 
+{
+	name: "London",
+	id: 1234,
+	itinerary: [
+		{
+			day_no: 1,
+			id: "4ace4417f964a5207bcf20e3",
+			start: "10:30 am",
+			end: "12:00 pm",
+			date: "July 02, 2013"
+		},
+		{
+			day_no: 1,
+			id: "4abe4502f964a520558c20e3",
+			start: "1:00 PM",
+			end: "3:00 PM",
+			date: "July 02, 2013"
+		}
+
+	]
+};
+
+
+
+var baseURL = "https://api.foursquare.com/v2/venues/";
+var CLIENT_ID = "5CYXNIKAOPTKCKIGHNPPJ3DQJBY4IPL0XJL140TLN121U514";
+var CLIENT_SECRET = "RPZTJ5NHBY0L213UKWP3T3DF2QVUXNKMW34FRJOUZFDIFNDM&v=20131124";
+
+var formatVenueLookupURL = function(id) {
+	var URL = baseURL + encodeURIComponent(id) + "?client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET;
+	return URL;
+}
+
+var lookup = function(venue) {
+	var urlToSend = formatVenueLookupURL(venue.id);
+	$.ajax({
+		  url: urlToSend
+		}).done(function(data) {
+			venue.venue = data.response.venue;
+			displayVenue(venue);
+	});
+}
+
+london.itinerary.forEach(function(venue){
+	// create and append tr element before lookup, async call might mess up order
+	var row = $(document.createElement('tr')).attr("id", "tr-" + venue.id);
+	$('tbody').append(row);
+	lookup(venue);
+});
+
+$('h1').text(london.name);
+
+var cloudMadeAPIKey = '7da9717aa6e646c2b4d6a6a1fbc94765';
+var displayVenue = function(venue) {
+	var category;
+	venue.venue.categories.forEach(function(cat) {
+		if (cat.primary) {
+			category = cat;
+		}
+	});
+	// Each venue is displayed as a single row in a table
+	// Build the row and append to the table body
+	// create icon
+	var img = $(document.createElement('img')).attr("src", category.icon.prefix + "bg_88" + category.icon.suffix);
+	var iconColumn = $(document.createElement('td')).addClass('icon').append(img);
+	// venue 
+	var name = $(document.createElement('h4')).addClass('list-group-item-heading').text(venue.venue.name);
+	var address = $(document.createElement('p')).addClass('list-group-item-text').text(venue.venue.location.address);
+	var categoryLabel = $(document.createElement('p')).text(category.shortName);
+	var venueColumn = $(document.createElement('td')).addClass('venue').append(name).append(address).append(categoryLabel);
+	// time
+	var timeColumn = $(document.createElement('td')).addClass('time').text(venue.start + " - " + venue.end);
+	// map - create and append the element to DOM before Leaflet loads it
+	var map = $(document.createElement('div')).addClass('mini-map').attr('id', 'map' + venue.venue.id);
+	var mapEl = $(document.createElement('td')).append(map);
+	// append the icon, venue info, time, and map columns to a row element
+	var row = $(document.getElementById('tr-' + venue.id)).append(iconColumn).append(venueColumn).append(timeColumn).append(mapEl);
+
+	var leafletMap = L.map('map' + venue.venue.id, {
+		center: [venue.venue.location.lat, venue.venue.location.lng],
+		zoom: 16,
+		dragging: true
+	});
+	L.tileLayer('http://{s}.tile.cloudmade.com/' + cloudMadeAPIKey + '/997/256/{z}/{x}/{y}.png', {
+	    maxZoom: 50
+	}).addTo(leafletMap);
+	L.marker([venue.venue.location.lat, venue.venue.location.lng]).addTo(leafletMap);
+}
+
+

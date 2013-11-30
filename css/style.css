@@ -108,6 +108,40 @@ footer {
 	opacity: 0.75;
 }
 
+/* Itinerary view page */
+.list-group-item-heading {
+	text-transform: uppercase;
+}
+
+.view-itinerary .container {
+	width: 80%;
+}
+
+.view-itinerary h1 {
+	text-transform: uppercase;
+}
+
+td {
+	vertical-align: middle!important;
+}
+
+td.icon {
+	width: 100px;
+}
+
+td.venue {
+	vertical-align: middle!important;
+}
+
+td.time {
+	vertical-align: middle!important;
+}
+
+.mini-map {
+	height: 150px;
+	width: 150px;
+}
+
 /* Itinerary build page */
 .left {
 	float: left;
