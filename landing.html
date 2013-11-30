@@ -8,11 +8,10 @@
     <meta name="author" content="">
    <!-- <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png"> TODO -->
 
-    <title>Build Itinerary</title>
+    <title>Title</title>
 
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-	<link href="bootstrap/css/bootstrap-theme.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="css/style.css" rel="stylesheet">
@@ -24,36 +23,36 @@
     <![endif]-->
   </head>
 
-  <body>
+  <body class="landing">
 
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-		<!-- filled in by main.js on every page -->
-    </div>
+      <div class="tagline">
+        <h1>Plan your adventure</h1>
+        <h2>Build an itinerary for your next trip</h2>
+      </div>
+      
+      <div class="white-container">
+        <div class="left two-thirds">
+        <input type="search" class="landing form-control input-lg" placeholder="Choose any venue to get started">
+        <button type="button" class="landing btn btn-primary">Create new</button>
+        <p> <a href="#" style="margin-left: 1em;"> or try a sample itinerary</a> </p>
+        </div>
 
-    <div class="container">
-	
-		<div class="left two-thirds">
-			<h1>Itinerary Builder</h1>
-			<p>Help info here</p>
-			<div id="builder-controls">
-				<label>Search for: <input type="text" name="query" id="query" placeholder="Starbucks or museum"></label>
-				&nbsp;&nbsp;
-				<label>near: <input type="text" name="location" id="location" placeholder="New York, NY or 90210"></label>
-				&nbsp;&nbsp;
-				<button type="button" id="searchForVenues" class="btn btn-primary">Search!</button>
-				<br><br>
-			</div>
-			
-			<!-- holds results of API call -->
-			<div id="holder">Holds results of search</div>
-		</div> <!-- /.left-two-thirds -->
-		
-		<div class="right one-third">
-			<h1>Existing itinerary</h1>
-			<p>Will put mini-calendar view here.</p>
-		</div> <!-- /.right-one-third -->
 
-    </div><!-- /.container -->
+        <div class="right one-third">
+          <div>
+        <p>Been here before? Search for your itinerary</p>
+        <input type="search" class="landing form-control" placeholder="Itinerary ID">
+        <button type="button" class="landing btn btn-primary">Search</button>
+      </div>
+        </div>
+
+      </div>
+
+      
+      
+
+      <footer> <div class="powered-by-foursquare"></div>
+      </footer>
 
 
     <!-- Bootstrap core JavaScript
@@ -64,6 +63,5 @@
 	<script>window.jQuery || document.write('<script src="js/jquery-1.10.2.min.js">\x3C/script>')</script>
     <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>
-	<script type="text/javascript" src="js/build-itinerary.js"></script>
   </body>
 </html>
