@@ -138,10 +138,14 @@ footer {
 .panel-map {
 	float: left;
 	width: 30%;
-	height: 100px;
+	height: 150px;
 }
 
 .panel-add-button {
 	float: right;
 	width: 15%;
+}
+
+.hidden-venue-id {
+	display: none;
 }

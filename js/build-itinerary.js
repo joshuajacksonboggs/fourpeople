@@ -74,12 +74,14 @@ function showResults(venues) {
 		$("#search-results").append(buildResultPanel(i, name, address, id));
 		
 		var mapID = 'panel-map-' + i;
-		var map = L.map(mapID).setView([51.505, -0.09], 13);
+		var lat = venues[i].location.lat;
+		var lng = venues[i].location.lng;
+		var map = L.map(mapID).setView([lat, lng], 16);
 		L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
 			attribution: '',
 			maxZoom: 18
 		}).addTo(map);
-		L.marker([51.5, -0.09]).addTo(map)
+		L.marker([lat, lng]).addTo(map)
 			.bindPopup('Pretty popup. <br> Easily customizable.');
 	}
 }
@@ -87,17 +89,25 @@ function showResults(venues) {
 // Builds the panel for a single search result
 function buildResultPanel(number, name, address, id) {
 	var html = 
-		'<div class="panel panel-primary">' +
+		'<div class="panel panel-default">' +
 			'<div class="panel-heading">' + 
               '<h3 class="panel-title">' + name + '</h3>' +
             '</div>' +
             '<div class="panel-body">' +
               '<div class="panel-text-info">' + address + '</div>' +
 			  '<div class="panel-map" id="panel-map-' + number +'"></div>' +
-			  '<div class="panel-add-button">Button here<br>id:' + id + '</div>' +
+			  '<div class="panel-add-button btn btn-lg btn-primary"><span class="glyphicon glyphicon-plus"></span><br>Add<br>'+
+			  '<span class="hidden-venue-id">' + id + '</span></div>' +
             '</div>' +
           '</div>';
 	return html;
 }
+
+// TODO
+// When add button clicked
+$(document).on('click', '.panel-add-button', function(){
+	var venueID = $(event.target).children("span.hidden-venue-id").text();
+	alert("Venue ID: " + venueID);
+});
 
 });
