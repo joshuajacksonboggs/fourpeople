@@ -42,6 +42,7 @@ body {
 .panel-map {
 	float: left;
 	width: 30%;
+	height: 100px;
 }
 
 .panel-add-button {

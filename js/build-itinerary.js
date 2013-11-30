@@ -71,12 +71,21 @@ function showResults(venues) {
 			address += "<br>Cross Street: " + venues[i].location.crossStreet + "";
 		}
 		var id = venues[i].id;
-		$("#search-results").append(buildResultPanel(name, address, id));
+		$("#search-results").append(buildResultPanel(i, name, address, id));
+		
+		var mapID = 'panel-map-' + i;
+		var map = L.map(mapID).setView([51.505, -0.09], 13);
+		L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
+			attribution: '',
+			maxZoom: 18
+		}).addTo(map);
+		L.marker([51.5, -0.09]).addTo(map)
+			.bindPopup('Pretty popup. <br> Easily customizable.');
 	}
 }
 
 // Builds the panel for a single search result
-function buildResultPanel(name, address, id) {
+function buildResultPanel(number, name, address, id) {
 	var html = 
 		'<div class="panel panel-primary">' +
 			'<div class="panel-heading">' + 
@@ -84,7 +93,7 @@ function buildResultPanel(name, address, id) {
             '</div>' +
             '<div class="panel-body">' +
               '<div class="panel-text-info">' + address + '</div>' +
-			  '<div class="panel-map">Map here</div>' +
+			  '<div class="panel-map" id="panel-map-' + number +'"></div>' +
 			  '<div class="panel-add-button">Button here<br>id:' + id + '</div>' +
             '</div>' +
           '</div>';
