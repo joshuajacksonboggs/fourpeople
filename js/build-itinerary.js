@@ -4,30 +4,43 @@ var baseURL = "https://api.foursquare.com/v2/venues/search?client_id=5CYXNIKAOPT
 
 // Gathers parameters and sends search request to Foursquare API
 $("#searchForVenues").click(function() {
-	//TODO: error check on entries
+	//error checking first - must have venue name and geocode
+	$("#error-holder").css("display","none	");
+	var error = "";
 	var query = $("#query").val();
 	var location = $("#location").val();
+	if(query == "")
+		error += "Please give part of a venue name so we can search for you.<br>";
+	if(location == "")
+		error += "Please give an area within which to search.";
+	//set error to hold either "" or new error(s)
+	$("#error-holder").html(error);
+	if(error != ""){
+		$("#error-holder").css("display","block");
+	}
 	
-	var urlToSend = baseURL + "&query=" + encodeURIComponent(query) + "&near=" + encodeURIComponent(location);
-	console.log("Sending request: " + urlToSend);
-	
-	// send request
-	$.ajax({
-	  url: urlToSend
-	}).done(function( data ) {
-		if(!data.response.venues[0]) {
-			// display no-results error
-			$("#search-results").html("Sorry, we couldn't find any results.");
-		} else {
-			// display results to user
-			showResults(data.response.venues);
-		}
+	if(error == "") {
+		var urlToSend = baseURL + "&query=" + encodeURIComponent(query) + "&near=" + encodeURIComponent(location);
+		console.log("Sending request: " + urlToSend);
 		
-		// log response for debugging
-		if ( console && console.log ) {
-		  console.log(data);
-		}
-	});
+		// send request
+		$.ajax({
+		  url: urlToSend
+		}).done(function( data ) {
+			if(!data.response.venues[0]) {
+				// display no-results error
+				$("#search-results").html("Sorry, we couldn't find any results.");
+			} else {
+				// display results to user
+				showResults(data.response.venues);
+			}
+			
+			// log response for debugging
+			if ( console && console.log ) {
+			  console.log(data);
+			}
+		});
+	}
 });
 
 // Next two functions allow user to search by hitting ENTER
