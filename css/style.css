@@ -121,6 +121,10 @@ footer {
 	text-transform: uppercase;
 }
 
+.table-hover tr:hover {
+	cursor: pointer;
+}
+
 td {
 	vertical-align: middle!important;
 }
@@ -129,12 +133,14 @@ td.icon {
 	width: 100px;
 }
 
-td.venue {
-	vertical-align: middle!important;
+.rating {
+	display: inline-block;
+	margin-top: 0px;
 }
 
-td.time {
-	vertical-align: middle!important;
+.info {
+	display: inline-block;
+	padding-left: 10px;
 }
 
 .mini-map {
