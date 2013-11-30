@@ -7,7 +7,7 @@ body {
 /* Landing */
 
 body.landing {
-	background-image: url('../assets/New-York-City-Skyline.jpg');
+	background-image: url('../images/New-York-City-Skyline.jpg');
 	background-size: 100%;
 }
 
@@ -85,7 +85,7 @@ footer {
 }
 
 .powered-by-foursquare {
-	background-image: url('../assets/poweredByFoursquare_white.png');
+	background-image: url('../images/poweredByFoursquare_white.png');
 	background-repeat: no-repeat;
 	background-size: 250px;
 	background-color: black;
