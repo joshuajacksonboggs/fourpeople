@@ -130,6 +130,11 @@ footer {
 	display: none;
 }
 
+#loading-image {
+	height: 300px;
+	display: none;
+}
+
 .panel-text-info {
 	float: left;
 	width: 50%;

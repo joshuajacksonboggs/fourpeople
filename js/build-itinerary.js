@@ -4,32 +4,44 @@ var baseURL = "https://api.foursquare.com/v2/venues/search?client_id=5CYXNIKAOPT
 
 // Gathers parameters and sends search request to Foursquare API
 $("#searchForVenues").click(function() {
-	//error checking first - must have venue name and geocode
-	$("#error-holder").css("display","none	");
+	//error checking first - must have venue name and geocode for search
+	$("#error-holder").css("display","none");
 	var error = "";
 	var query = $("#query").val();
 	var location = $("#location").val();
-	if(query == "")
+	if(query == "") {
 		error += "Please give part of a venue name so we can search for you.<br>";
-	if(location == "")
+	}
+	if(location == "") {
 		error += "Please give an area within which to search.";
+	}
+	
 	//set error to hold either "" or new error(s)
 	$("#error-holder").html(error);
 	if(error != ""){
 		$("#error-holder").css("display","block");
 	}
 	
+	// if no errors, send search request and parse results
 	if(error == "") {
 		var urlToSend = baseURL + "&query=" + encodeURIComponent(query) + "&near=" + encodeURIComponent(location);
 		console.log("Sending request: " + urlToSend);
+		
+		// display loading gif to user
+		$("#loading-image").css("display", "block");
+		$("#search-results").html(" ");
 		
 		// send request
 		$.ajax({
 		  url: urlToSend
 		}).done(function( data ) {
+			// hide loading gif
+			$("#loading-image").css("display", "none");
+			
+			// parse response data
 			if(!data.response.venues[0]) {
 				// display no-results error
-				$("#search-results").html("Sorry, we couldn't find any results.");
+				$("#search-results").html("Sorry, we couldn't find any matching results.");
 			} else {
 				// display results to user
 				showResults(data.response.venues);
@@ -57,8 +69,6 @@ $("#location").keypress(function(e){
 
 // Displays results for user
 function showResults(venues) {
-	//TODO: handle no results
-	$("#search-results").html(" ");
 	for(var i = 0; i < venues.length; i++) {
 		var name = venues[i].name;
 		var address = "";
@@ -104,7 +114,9 @@ function buildResultPanel(number, name, address, id) {
 }
 
 // TODO
-// When add button clicked
+// Add venue to itinerary when add button clicked 
+// Note: jQuery .click doesn't pick up elements when added to the page after load,
+// so using .on here
 $(document).on('click', '.panel-add-button', function(){
 	//console.log($(event.target).children("span").text());
 	var venueID = $(event.target).children("span.hidden-venue-id").text();
