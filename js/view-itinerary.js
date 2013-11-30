@@ -1,17 +1,16 @@
-var london = 
+// Dummy London itinerary
+var itinerary = 
 {
 	name: "London",
 	id: 1234,
 	itinerary: [
 		{
-			day_no: 1,
 			id: "4ace4417f964a5207bcf20e3",
 			start: "10:30 am",
 			end: "12:00 pm",
 			date: "July 02, 2013"
 		},
 		{
-			day_no: 1,
 			id: "4abe4502f964a520558c20e3",
 			start: "1:00 PM",
 			end: "3:00 PM",
@@ -38,18 +37,21 @@ var lookup = function(venue) {
 		  url: urlToSend
 		}).done(function(data) {
 			venue.venue = data.response.venue;
+			console.log(data.response.venue);
 			displayVenue(venue);
 	});
 }
 
-london.itinerary.forEach(function(venue){
+itinerary.itinerary.forEach(function(venue){
 	// create and append tr element before lookup, async call might mess up order
 	var row = $(document.createElement('tr')).attr("id", "tr-" + venue.id);
+	//var expand = $(document.createElement('tr')).attr("id", "tr-expand-" + venue.id);
+
 	$('tbody').append(row);
 	lookup(venue);
 });
 
-$('h1').text(london.name);
+$('h1').text(itinerary.name);
 
 var cloudMadeAPIKey = '7da9717aa6e646c2b4d6a6a1fbc94765';
 var displayVenue = function(venue) {
@@ -66,16 +68,28 @@ var displayVenue = function(venue) {
 	var iconColumn = $(document.createElement('td')).addClass('icon').append(img);
 	// venue 
 	var name = $(document.createElement('h4')).addClass('list-group-item-heading').text(venue.venue.name);
+	var rating = $(document.createElement('h3')).append($(document.createElement('span')).addClass('label').addClass('label-success').text(venue.venue.rating)).addClass('rating');
 	var address = $(document.createElement('p')).addClass('list-group-item-text').text(venue.venue.location.address);
 	var categoryLabel = $(document.createElement('p')).text(category.shortName);
-	var venueColumn = $(document.createElement('td')).addClass('venue').append(name).append(address).append(categoryLabel);
+	var venueInfo = $(document.createElement('div')).addClass('info').append(address).append(categoryLabel);
+
+
+	// rating and venue info table
+	rating = $(document.createElement('td')).append(rating);
+	venueInfo = $(document.createElement('td')).append(venueInfo);
+	var infoTable = $(document.createElement('table')).append($(document.createElement('tbody')).append($(document.createElement('tr')).append(rating).append(venueInfo)));
+	
+	var venueColumn = $(document.createElement('td')).addClass('venue').append(name).append(infoTable);//.append(venueInfo);//.append(categoryLabel);
 	// time
 	var timeColumn = $(document.createElement('td')).addClass('time').text(venue.start + " - " + venue.end);
 	// map - create and append the element to DOM before Leaflet loads it
 	var map = $(document.createElement('div')).addClass('mini-map').attr('id', 'map' + venue.venue.id);
 	var mapEl = $(document.createElement('td')).append(map);
+
 	// append the icon, venue info, time, and map columns to a row element
 	var row = $(document.getElementById('tr-' + venue.id)).append(iconColumn).append(venueColumn).append(timeColumn).append(mapEl);
+
+
 
 	var leafletMap = L.map('map' + venue.venue.id, {
 		center: [venue.venue.location.lat, venue.venue.location.lng],
@@ -86,6 +100,8 @@ var displayVenue = function(venue) {
 	    maxZoom: 50
 	}).addTo(leafletMap);
 	L.marker([venue.venue.location.lat, venue.venue.location.lng]).addTo(leafletMap);
+
+	// more details
 }
 
 
