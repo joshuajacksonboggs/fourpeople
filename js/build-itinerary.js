@@ -1,6 +1,8 @@
 /** Javascript functionality for the itinerary builder page */
 $(function() {
-var baseURL = "https://api.foursquare.com/v2/venues/search?client_id=5CYXNIKAOPTKCKIGHNPPJ3DQJBY4IPL0XJL140TLN121U514&client_secret=RPZTJ5NHBY0L213UKWP3T3DF2QVUXNKMW34FRJOUZFDIFNDM&v=20131124";
+var baseURL = "https://api.foursquare.com/v2/venues/search";
+var CLIENT_ID = "5CYXNIKAOPTKCKIGHNPPJ3DQJBY4IPL0XJL140TLN121U514";
+var CLIENT_SECRET = "RPZTJ5NHBY0L213UKWP3T3DF2QVUXNKMW34FRJOUZFDIFNDM&v=20131124";
 
 // Gathers parameters and sends search request to Foursquare API
 $("#searchForVenues").click(function() {
@@ -24,7 +26,8 @@ $("#searchForVenues").click(function() {
 	
 	// if no errors, send search request and parse results
 	if(error == "") {
-		var urlToSend = baseURL + "&query=" + encodeURIComponent(query) + "&near=" + encodeURIComponent(location);
+		var urlToSend = baseURL + "?client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET;
+		urlToSend += "&query=" + encodeURIComponent(query) + "&near=" + encodeURIComponent(location);
 		console.log("Sending request: " + urlToSend);
 		
 		// display loading gif to user
