@@ -1,5 +1,19 @@
 /** Functions for working with FileSystem API **/
 
+var fileSystem = null;
+
+function initializeFS() {
+	window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+
+	// request quota (instead of just file system) for persistent data storage
+	window.webkitStorageInfo.requestQuota(PERSISTENT, 5*1024*1024, 
+			function(grantedBytes) {
+			  window.requestFileSystem(PERSISTENT, grantedBytes, onInitFs, errorHandler);
+			}, function(e) {
+			  console.log('Error', e);
+			});
+}
+
 /* On initialize file system */
 function onInitFs(fs) {
 	fileSystem = fs;
@@ -121,11 +135,6 @@ function read(fileEntry, callbackFunction) {
 	}, errorHandler);
 }
 
-/* Tester callback function for read */
-function alertTest(toDisplay) {
-	alert("WOOHOO WE MADE IT! " + toDisplay);
-}
-
 /* Delete a file */
 function remove(fileEntry) {
 	// Get a File object representing the file,
@@ -134,36 +143,3 @@ function remove(fileEntry) {
 		console.log('File removed.');
     }, errorHandler);
 }
-
-$("#show-file-text").click(function() {
-	fileSystem.root.getFile(
-		'test.txt', 
-		{}, 
-		function(fileEntry) { 
-			read(fileEntry, alertTest); 
-		}, 
-		errorHandler
-	);
-});
-
-$("#remove-file").click(function() {
-	fileSystem.root.getFile(
-		'test.txt', 
-		{}, 
-		function(fileEntry) { 
-			remove(fileEntry); 
-		}, 
-		errorHandler
-	);
-});
-
-$("#write-to-file").click(function(){
-	fileSystem.root.getFile(
-		'test.txt', 		
-		{create: true}, 	
-		function(fileEntry) { 
-			write(fileEntry, 'Hello world!'); 	
-		}, 
-		errorHandler
-	);
-});
