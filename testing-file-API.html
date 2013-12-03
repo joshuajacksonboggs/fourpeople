@@ -56,19 +56,6 @@
     <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>
 	<script type="text/javascript" src="js/filesystem.js"></script>
-	
-	<script type="text/javascript">
-		$(".starter-template").append("jQuery ready");
-		var fileSystem = null;
-		window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
-
-		// request quota (instead of just file system) for persistent data storage
-		window.webkitStorageInfo.requestQuota(PERSISTENT, 5*1024*1024, 
-				function(grantedBytes) {
-				  window.requestFileSystem(PERSISTENT, grantedBytes, onInitFs, errorHandler);
-				}, function(e) {
-				  console.log('Error', e);
-				});
-	</script>
+	<script type="text/javascript" src="js/fs-testing.js"></script>
   </body>
 </html>
