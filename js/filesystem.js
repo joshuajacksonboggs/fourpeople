@@ -11,22 +11,25 @@ function onInitFs(fs) {
 	// create: true = creates if doesn't exist, throws error if does
 	// 		   false = simply fetch and return
 	// exclusive: true = returns error if file already exists with create:true
-	fileSystem.root.getFile(
+	/*fileSystem.root.getFile(
 		'test.txt', 		
 		{create: false}, 	
 		function(fileEntry) { write(fileEntry, 'Testing'); 	}, 
 		errorHandler
-	);
+	);*/
 
 	// read from file
 	// four inputs: file name, options, function, and error callback
 	// throws error of file doesn't exist
-	fileSystem.root.getFile(
+	/*fileSystem.root.getFile(
 		'test.txt', 
 		{}, 
-		function(fileEntry) { read(fileEntry); }, 
+		function(fileEntry) { 
+			read(fileEntry); 
+			//alert(fileText);
+		}, 
 		errorHandler
-	);
+	);*/
 }
 
 /* Error handler function */
@@ -103,18 +106,64 @@ function append(fileEntry, textToWrite) {
 }
 
 /* Read from a file */
-function read(fileEntry) {
+function read(fileEntry, callbackFunction) {
 	// Get a File object representing the file,
 	// then use FileReader to read its contents.
 	fileEntry.file(function(file) {
 		var reader = new FileReader();
 
 		reader.onloadend = function(e) {
-			var txtArea = document.createElement('textarea');
-			txtArea.value = this.result;
-			document.body.appendChild(txtArea);
+			console.log("Read file: " + this.result);
+			callbackFunction(this.result);
 		};
 
 		reader.readAsText(file);
 	}, errorHandler);
 }
+
+/* Tester callback function for read */
+function alertTest(toDisplay) {
+	alert("WOOHOO WE MADE IT! " + toDisplay);
+}
+
+/* Delete a file */
+function remove(fileEntry) {
+	// Get a File object representing the file,
+	// then use FileReader to read its contents.
+	fileEntry.remove(function() {
+		console.log('File removed.');
+    }, errorHandler);
+}
+
+$("#show-file-text").click(function() {
+	fileSystem.root.getFile(
+		'test.txt', 
+		{}, 
+		function(fileEntry) { 
+			read(fileEntry, alertTest); 
+		}, 
+		errorHandler
+	);
+});
+
+$("#remove-file").click(function() {
+	fileSystem.root.getFile(
+		'test.txt', 
+		{}, 
+		function(fileEntry) { 
+			remove(fileEntry); 
+		}, 
+		errorHandler
+	);
+});
+
+$("#write-to-file").click(function(){
+	fileSystem.root.getFile(
+		'test.txt', 		
+		{create: true}, 	
+		function(fileEntry) { 
+			write(fileEntry, 'Hello world!'); 	
+		}, 
+		errorHandler
+	);
+});

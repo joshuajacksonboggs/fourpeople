@@ -34,6 +34,9 @@
 
       <div class="starter-template">
         <h1>Testing File API</h1>
+		<button id="write-to-file">Write "Hello world!"</button>
+		<button id="show-file-text">Show file text</button>
+		<button id="remove-file">Delete file</button>
       </div>
 	  <div id="holder"></div>
 
@@ -56,7 +59,7 @@
 	
 	<script type="text/javascript">
 		$(".starter-template").append("jQuery ready");
-		var fileSystem;
+		var fileSystem = null;
 		window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
 
 		// request quota (instead of just file system) for persistent data storage
