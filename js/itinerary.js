@@ -244,12 +244,16 @@ function buildResultPanel(number, name, address, id) {
 	return html;
 }
 
+// very similar to lookup function, but uses venueID directly
+// TODO: have user select time and date instead of hard-coded
 var lookupByID = function(venueID) {
 	var urlToSend = formatVenueLookupURL(venueID);
 	$.ajax({
 		  url: urlToSend
 		}).done(function(data) {
 			var fullVenue = data.response.venue;
+			console.log(fullVenue);
+			
 			itinerary.itinerary.push({
 				id: venueID,
 				start: "10:30 AM",
@@ -257,12 +261,12 @@ var lookupByID = function(venueID) {
 				date: "July 02, 2013",
 				venue: fullVenue
 			});
-			console.log(fullVenue);
-			displayVenue(itinerary.itinerary[itinerary.itinerary.length-1]);
+			var lastIndex = itinerary.itinerary.length-1;
+			var venueToDisplay = itinerary.itinerary[lastIndex];
+			displayVenue(venueToDisplay);
 	});
 }
 
-// TODO
 // Add venue to itinerary when add button clicked 
 // Note: jQuery .click doesn't pick up elements when added to the page after load,
 // so using .on here
