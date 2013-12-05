@@ -68,7 +68,7 @@ itinerary.itinerary.forEach(function(venue){
 	lookup(venue);
 });
 
-$('h1').text(itinerary.name);
+$('h1#itinerary-title').text(itinerary.name);
 
 var cloudMadeAPIKey = '7da9717aa6e646c2b4d6a6a1fbc94765';
 var displayVenue = function(venue) {
