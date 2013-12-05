@@ -3,10 +3,14 @@
 var baseURL = "https://api.foursquare.com/v2/venues/";
 var CLIENT_ID = "5CYXNIKAOPTKCKIGHNPPJ3DQJBY4IPL0XJL140TLN121U514";
 var CLIENT_SECRET = "RPZTJ5NHBY0L213UKWP3T3DF2QVUXNKMW34FRJOUZFDIFNDM&v=20131124";
+var cloudMadeAPIKey = '7da9717aa6e646c2b4d6a6a1fbc94765';
 
+//=============================================================================
 //=============================================================================
 // Viewing current itinerary
 //=============================================================================
+//=============================================================================
+
 // Dummy London itinerary
 var itinerary = 
 {
@@ -73,7 +77,6 @@ itinerary.itinerary.forEach(function(venue){
 
 $('h1#itinerary-title').text(itinerary.name);
 
-var cloudMadeAPIKey = '7da9717aa6e646c2b4d6a6a1fbc94765';
 var displayVenue = function(venue) {
 	var category;
 	venue.venue.categories.forEach(function(cat) {
@@ -109,8 +112,7 @@ var displayVenue = function(venue) {
 	// append the icon, venue info, time, and map columns to a row element
 	var row = $(document.getElementById('tr-' + venue.id)).append(iconColumn).append(venueColumn).append(timeColumn).append(mapEl);
 
-
-
+	
 	var leafletMap = L.map('map' + venue.venue.id, {
 		center: [venue.venue.location.lat, venue.venue.location.lng],
 		zoom: 16,
@@ -124,10 +126,12 @@ var displayVenue = function(venue) {
 	// more details
 }
 
-
+//=============================================================================
 //=============================================================================
 // Adding to current itinerary
 //=============================================================================
+//=============================================================================
+
 // Gathers parameters and sends search request to Foursquare API
 $("#searchForVenues").click(function() {
 	//error checking first - must have venue name and geocode for search
@@ -240,11 +244,39 @@ function buildResultPanel(number, name, address, id) {
 	return html;
 }
 
-// TODO
+// very similar to lookup function, but uses venueID directly
+// TODO: have user select time and date instead of hard-coded
+var lookupByID = function(venueID) {
+	var urlToSend = formatVenueLookupURL(venueID);
+	$.ajax({
+		  url: urlToSend
+		}).done(function(data) {
+			var fullVenue = data.response.venue;
+			console.log(fullVenue);
+			
+			itinerary.itinerary.push({
+				id: venueID,
+				start: "10:30 AM",
+				end: "12:00 PM",
+				date: "July 02, 2013",
+				venue: fullVenue
+			});
+			var lastIndex = itinerary.itinerary.length-1;
+			var venueToDisplay = itinerary.itinerary[lastIndex];
+			displayVenue(venueToDisplay);
+	});
+}
+
 // Add venue to itinerary when add button clicked 
 // Note: jQuery .click doesn't pick up elements when added to the page after load,
 // so using .on here
 $(document).on('click', '.panel-add-button', function(){
 	var venueID = $(event.target).children("span.hidden-venue-id").text();
-	alert("Venue ID: " + venueID);
+	console.log("Venue ID: " + venueID);
+	
+	// create and append tr element before lookup, async call might mess up order
+	var row = $(document.createElement('tr')).attr("id", "tr-" + venueID);
+	$('tbody#venue-table-tbody').append(row);
+	
+	lookupByID(venueID);
 });
