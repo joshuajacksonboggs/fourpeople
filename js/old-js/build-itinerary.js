@@ -121,7 +121,6 @@ function buildResultPanel(number, name, address, id) {
 // Note: jQuery .click doesn't pick up elements when added to the page after load,
 // so using .on here
 $(document).on('click', '.panel-add-button', function(){
-	//console.log($(event.target).children("span").text());
 	var venueID = $(event.target).children("span.hidden-venue-id").text();
 	alert("Venue ID: " + venueID);
 });
