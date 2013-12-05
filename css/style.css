@@ -151,7 +151,6 @@ td.icon {
 /* Itinerary build page */
 .left {
 	float: left;
-	width: 65%;
 }
 
 .right {
@@ -163,7 +162,7 @@ td.icon {
 }
 
 .one-third {
-	width: 30%;
+	width: 35%;
 }
 
 #error-holder {
@@ -177,19 +176,18 @@ td.icon {
 
 .panel-text-info {
 	float: left;
-	width: 50%;
+	width: 35%;
 }
 
 .panel-map {
 	float: left;
-	width: 30%;
-	height: 150px;
+	width: 40%;
+	height: 100px;
 }
 
 .panel-add-button {
 	float: right;
-	width: 15%;
-	font-size: 150%;
+	width: 22%;
 	font-weight: bold;
 }
 
