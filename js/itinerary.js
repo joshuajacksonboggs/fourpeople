@@ -132,6 +132,40 @@ var displayVenue = function(venue) {
 //=============================================================================
 //=============================================================================
 
+// Hide adding venues div at first
+$("#add-venues-content").hide();
+
+var durLength = 400;
+// When click "Add venues," show search sidebar
+$("#show-add-venues").click(function() {
+	$("#itinerary-content").animate({
+       width: '50%'
+    }, { duration: durLength, queue: false });
+    $("#add-venues-content").show({
+		effect: "slide",
+		duration: durLength,
+		queue: false,
+		direction: "right"
+	});
+	$("#hide-add-venues").show();
+	$("#show-add-venues").hide();
+});
+
+// When click "Done adding," hide search sidebar
+$("#hide-add-venues").click(function() {
+	$("#itinerary-content").animate({
+       width: '100%'
+    }, { duration: durLength, queue: false });
+    $("#add-venues-content").hide({
+		effect: "slide",
+		duration: durLength,
+		queue: false,
+		direction: "right"
+	});
+	$("#show-add-venues").show();
+	$("#hide-add-venues").hide();
+});
+
 // Gathers parameters and sends search request to Foursquare API
 $("#searchForVenues").click(function() {
 	//error checking first - must have venue name and geocode for search

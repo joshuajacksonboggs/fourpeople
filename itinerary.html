@@ -38,15 +38,17 @@
 
     <div class="container">
 	
-		<div class="left two-thirds">
+		<div id="itinerary-content" class="left">
 			<h1 id="itinerary-title">Existing view here</h1>
+			<button id="show-add-venues" class="btn btn-primary right">Add venues</button>
+			<button id="hide-add-venues" class="btn btn-primary right">Done adding</button><br><br>
 			<table class="table table-hover">
 				<tbody id="venue-table-tbody">
 				</tbody>
 			</table>
-		</div> <!-- /.left-two-thirds -->
+		</div> <!-- /.left -->
 		
-		<div class="right one-third">
+		<div id="add-venues-content" class="right">
 			<h1>Add to Itinerary</h1>
 			<p>Help info here</p>
 			<div id="builder-controls">
@@ -62,7 +64,7 @@
 			<!-- holds results of API call -->
 			<img src="images/loading.gif" id="loading-image"/>
 			<div id="search-results">You haven't searched for anything yet :)</div>
-		</div> <!-- /.right-one-third -->
+		</div> <!-- /.right -->
 
     </div><!-- /.container -->
 
@@ -77,6 +79,7 @@
     <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
 	<!-- load local version of jQuery if cdn fails -->
 	<script>window.jQuery || document.write('<script src="js/jquery-1.10.2.min.js">\x3C/script>')</script>
+	<script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>
 	<!--<script type="text/javascript" src="js/build-itinerary.js"></script>

@@ -194,3 +194,15 @@ td.icon {
 .hidden-venue-id {
 	display: none;
 }
+
+#itinerary-content {
+	width: 100%;
+}
+
+#hide-add-venues {
+	display: none;
+}
+
+#add-venues-content {
+	width: 45%;
+}
