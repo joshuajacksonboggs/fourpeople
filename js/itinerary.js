@@ -147,6 +147,7 @@ $("#show-add-venues").click(function() {
 		queue: false,
 		direction: "right"
 	});
+	$("#itinerary-content").css("border-right", "1px solid #ccc");
 	$("#hide-add-venues").show();
 	$("#show-add-venues").hide();
 });
@@ -162,12 +163,30 @@ $("#hide-add-venues").click(function() {
 		queue: false,
 		direction: "right"
 	});
+	$("#itinerary-content").css("border-right", "none");
 	$("#show-add-venues").show();
 	$("#hide-add-venues").hide();
+	
+	clearOldSearch();
+	
+	// TODO: WRITE TO FILE
+});
+
+// reset all fields and clear displayed search
+function clearOldSearch() {
+	$("#query").val("");
+	$("#location").val("");
+	$("#error-holder").css("display", "none");
+	$("#search-results").html(" ");
+}
+
+// TODO: printer-friendly itinerary version
+$("#printer-view").click(function(){
+	alert("Coming soon :)");
 });
 
 // Gathers parameters and sends search request to Foursquare API
-$("#searchForVenues").click(function() {
+$("#search-for-venues").click(function() {
 	//error checking first - must have venue name and geocode for search
 	$("#error-holder").css("display","none");
 	var error = "";
@@ -223,12 +242,12 @@ $("#searchForVenues").click(function() {
 // Next two functions allow user to search by hitting ENTER
 $("#query").keypress(function(e){
 	if(e.which == 13) {
-		$("#searchForVenues").click();
+		$("#search-for-venues").click();
 	}
 });
 $("#location").keypress(function(e){
 	if(e.which == 13) {
-		$("#searchForVenues").click();
+		$("#search-for-venues").click();
 	}
 });
 
@@ -313,4 +332,9 @@ $(document).on('click', '.panel-add-button', function(){
 	$('tbody#venue-table-tbody').append(row);
 	
 	lookupByID(venueID);
+});
+
+// clears all fields and old search results
+$("#clear-search").click(function(){
+	clearOldSearch();
 });

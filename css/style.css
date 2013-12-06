@@ -172,6 +172,7 @@ td.icon {
 #loading-image {
 	height: 300px;
 	display: none;
+	margin: 0 auto;
 }
 
 .panel-text-info {
@@ -197,6 +198,7 @@ td.icon {
 
 #itinerary-content {
 	width: 100%;
+	border-right: none;
 }
 
 #hide-add-venues {
@@ -204,5 +206,10 @@ td.icon {
 }
 
 #add-venues-content {
-	width: 45%;
+	width: 48%;
+}
+
+#clear-search:hover {
+	text-decoration: none;
+	cursor: pointer;
 }
