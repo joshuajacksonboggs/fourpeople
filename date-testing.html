@@ -8,10 +8,12 @@
     <meta name="author" content="">
    <!-- <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png"> TODO -->
 
-    <title>Title</title>
+    <title>Date Testing</title>
 
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="jquery-ui/css/custom-theme/jquery-ui-1.10.3.custom.min.css" rel="stylesheet">
+	<link href="css/jquery.timePicker.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="css/style.css" rel="stylesheet">
@@ -32,11 +34,15 @@
     <div class="container">
 
       <div class="starter-template">
-        <h1>Bootstrap starter template</h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+        <h1>Testing date/time picker</h1>
+        <p>
+			Date: <input type="text" id="date-picker"> &nbsp; &nbsp;
+			Time: <input type="text" id="time" size="10" autocomplete="OFF"> &nbsp; &nbsp;
+			<button id="get-date">Get date</button><br>
+		</p>
       </div>
 	  <div id="holder"></div>
-
+	
     </div><!-- /.container -->
 
 	<div class="container" id="footer">
@@ -50,7 +56,44 @@
     <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
 	<!-- load local version of jQuery if cdn fails -->
 	<script>window.jQuery || document.write('<script src="js/jquery-1.10.2.min.js">\x3C/script>')</script>
+	<script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<script type="text/javascript" src="jquery-ui/js/jquery-ui-1.10.3.custom.min.js"></script>
     <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>
+	<script type="text/javascript" src="js/jquery.timePicker.js"></script>
+	<script type="text/javascript">
+	$( "#date-picker" ).datepicker({
+		  changeMonth: true,
+		  changeYear: true,
+		  showButtonPanel: true
+	});
+	$("#time").timePicker({
+		show24Hours: false
+	});
+	$("#get-date").click(function(){
+		var datePickerDate = $("#date-picker").val();
+		console.log(datePickerDate);
+		var dateParts = datePickerDate.split("/");
+		var month = parseInt(dateParts[0]) - 1;
+		var day = parseInt(dateParts[1]);
+		var year = parseInt(dateParts[2]);
+
+		var timeString = $("#time").val();
+		console.log(timeString);
+		var timeParts = timeString.split(":");
+		var moreTimeParts = timeParts[1].split(" ");
+		var hour = parseInt(timeParts[0]);
+		var minute = parseInt(moreTimeParts[0]);
+		if(moreTimeParts[1] == "PM") {
+			hour += 12;
+		}
+		
+		var date = new Date(year, month, day, hour, minute);
+		console.log(date);
+		
+		$("#holder").html(date);
+	});
+	
+	</script>
   </body>
 </html>
