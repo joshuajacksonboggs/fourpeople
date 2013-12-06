@@ -41,30 +41,39 @@
 		<div id="itinerary-content" class="left">
 			<h1 id="itinerary-title">Existing view here</h1>
 			<button id="show-add-venues" class="btn btn-primary right">Add venues</button>
-			<button id="hide-add-venues" class="btn btn-primary right">Done adding</button><br><br>
+			<button id="hide-add-venues" class="btn btn-primary right">Done adding</button>
+			<button id="printer-view" class="btn btn-primary right">Printer view</button><br><br>
 			<table class="table table-hover">
 				<tbody id="venue-table-tbody">
 				</tbody>
 			</table>
-		</div> <!-- /.left -->
+		</div> <!-- /#itinerary-content.left -->
 		
 		<div id="add-venues-content" class="right">
-			<h1>Add to Itinerary</h1>
-			<p>Help info here</p>
+			<h1>Add Venues</h1>
 			<div id="builder-controls">
-				<label>Search for: <input type="text" name="query" id="query" placeholder="Starbucks or museum"></label>
-				&nbsp;&nbsp;
-				<label>near: <input type="text" name="location" id="location" placeholder="New York, NY or 90210"></label>
-				&nbsp;&nbsp;
-				<button type="button" id="searchForVenues" class="btn btn-primary">Search!</button>
+				<div class="left two-thirds">
+					<label>Search for: <input type="text" name="query" id="query" placeholder="Starbucks or museum"></label>
+					&nbsp;&nbsp;
+					<label>near: <input type="text" name="location" id="location" placeholder="New York, NY or 90210"></label>
+				</div>
+				<div class="right one-third" style="text-align: center;">
+					<button type="button" id="search-for-venues" class="btn btn-primary">Search!</button><br>
+					<a id="clear-search">Clear search</a>
+				</div>
 				<br><br>
 			</div>
-			<div class="alert alert-danger" id="error-holder">
-			</div>
-			<!-- holds results of API call -->
+			<!-- clear left/right divs above -->
+			<div style="clear: both;"></div>
+			<!-- holds any error messages -->
+			<div class="alert alert-danger" id="error-holder"></div>
+			<hr>
+			<!-- shows loading gif; initially hidden until search is running -->
 			<img src="images/loading.gif" id="loading-image"/>
+			
+			<!-- stores results of search -->
 			<div id="search-results">You haven't searched for anything yet :)</div>
-		</div> <!-- /.right -->
+		</div> <!-- /#add-venues-content.right -->
 
     </div><!-- /.container -->
 
@@ -81,9 +90,9 @@
 	<script>window.jQuery || document.write('<script src="js/jquery-1.10.2.min.js">\x3C/script>')</script>
 	<script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+	
+	<!-- custom JavaScript -->
 	<script type="text/javascript" src="js/main.js"></script>
-	<!--<script type="text/javascript" src="js/build-itinerary.js"></script>
-	<script type="text/javascript" src="js/view-itinerary.js"></script>-->
 	<script type="text/javascript" src="js/itinerary.js"></script>
   </body>
 </html>
