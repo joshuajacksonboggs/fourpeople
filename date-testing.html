@@ -37,9 +37,11 @@
         <h1>Testing date/time picker</h1>
         <p>
 			Date: <input type="text" id="date-picker"> &nbsp; &nbsp;
-			Time: <input type="text" id="time" size="10" autocomplete="OFF"> &nbsp; &nbsp;
+			Time: <input type="text" id="time-picker" size="10" autocomplete="OFF"> &nbsp; &nbsp;
 			<button id="get-date">Get date</button><br>
 		</p>
+		
+		<p><button id="show-array">Show array</button>&nbsp; &nbsp; <button id="sort-array">Sort array</button></p>
       </div>
 	  <div id="holder"></div>
 	
@@ -62,12 +64,54 @@
 	<script type="text/javascript" src="js/main.js"></script>
 	<script type="text/javascript" src="js/jquery.timePicker.js"></script>
 	<script type="text/javascript">
+	var itinerary = 
+{
+	name: "London",
+	id: 1234,
+	itinerary: [
+		{
+			id: "4ace4417f964a5207bcf20e3",
+			start: "10:30 AM",
+			end: "12:00 PM",
+			date: "July 02, 2013",
+			startDate: "Wed Dec 11 2013 04:00:00 GMT-0500 (Eastern Standard Time)"
+		},
+		{
+			id: "4abe4502f964a520558c20e3",
+			start: "1:00 PM",
+			end: "3:00 PM",
+			date: "July 02, 2013",
+			startDate: "Fri Dec 06 2013 04:00:00 GMT-0500 (Eastern Standard Time)"
+		},
+		{
+			id: "4ac518edf964a520c1ac20e3",
+			start: "3:30 PM",
+			end: "4:15 PM",
+			startDate: "Fri Dec 06 2013 02:00:00 GMT-0500 (Eastern Standard Time)"
+		},
+		{
+			id: "4ac518cdf964a520f2a520e3",
+			start: "5:00 PM",
+			end: "6:30 PM",
+			date: "July 02, 2013",
+			startDate: "Fri Dec 06 2013 22:00:00 GMT-0500 (Eastern Standard Time)"
+		},
+		{
+			id: "4bed4c1e6e8c20a1ae1f7061",
+			start: "7:00 PM",
+			end: "8:30 PM",
+			date: "July 02, 2013",
+			startDate: "Fri Dec 06 2013 12:00:00 GMT-0500 (Eastern Standard Time)"
+		}
+
+	]
+	};
 	$( "#date-picker" ).datepicker({
 		  changeMonth: true,
 		  changeYear: true,
 		  showButtonPanel: true
 	});
-	$("#time").timePicker({
+	$("#time-picker").timePicker({
 		show24Hours: false
 	});
 	$("#get-date").click(function(){
@@ -78,13 +122,13 @@
 		var day = parseInt(dateParts[1]);
 		var year = parseInt(dateParts[2]);
 
-		var timeString = $("#time").val();
+		var timeString = $("#time-picker").val();
 		console.log(timeString);
 		var timeParts = timeString.split(":");
 		var moreTimeParts = timeParts[1].split(" ");
 		var hour = parseInt(timeParts[0]);
 		var minute = parseInt(moreTimeParts[0]);
-		if(moreTimeParts[1] == "PM") {
+		if(moreTimeParts[1] == "PM" || moreTimeParts[1] == "pm") {
 			hour += 12;
 		}
 		
@@ -92,6 +136,25 @@
 		console.log(date);
 		
 		$("#holder").html(date);
+		
+		itinerary.itinerary[0].startTime = date;
+	});
+	
+	$("#show-array").click(function(){
+		$("#holder").html("<pre><code>" + JSON.stringify(itinerary.itinerary, null, 2) + "</code></pre>");
+	});
+	
+	$("#sort-array").click(function(){
+		itinerary.itinerary.sort(function(a,b) {
+			var dateA = new Date(a.startDate);
+			var dateB = new Date(b.startDate);
+			
+			if(dateA > dateB) 
+				return 1;
+			if(dateA < dateB)
+				return -1;
+			return 0;
+		});
 	});
 	
 	</script>
