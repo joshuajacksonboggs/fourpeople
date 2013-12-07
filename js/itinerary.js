@@ -317,7 +317,36 @@ var lookupByID = function(venueID) {
 				venue: fullVenue
 			});
 			
-			displayAllVenues();
+			addSingleVenue();
+	});
+}
+
+// Takes the new itinerary, sorts it, and displays everything
+function addSingleVenue() {
+	//sort itinerary first
+	itinerary.itinerary.sort(function(a,b) {
+		var dateA = new Date(a.startDate);
+		var dateB = new Date(b.startDate);
+		
+		if(dateA > dateB) 
+			return 1;
+		if(dateA < dateB)
+			return -1;
+		return 0;
+	});
+	
+	// clear out table
+	$("#venue-table-tbody").html(" ");
+	
+	//go through everything in itinerary and re-display
+	itinerary.itinerary.forEach(function(venue){
+		// create and append tr element before lookup, async call might mess up order
+		var row = $(document.createElement('tr')).attr("id", "tr-" + venue.id);
+		//var expand = $(document.createElement('tr')).attr("id", "tr-expand-" + venue.id);
+
+		$('tbody#venue-table-tbody').append(row);
+		
+		displayVenue(venue);
 	});
 }
 
