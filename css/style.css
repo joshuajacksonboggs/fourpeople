@@ -209,6 +209,14 @@ td.icon {
 	width: 48%;
 }
 
+#add-venue-build-controls {
+	display: none;
+}
+
+#add-venue-error-holder {
+	display: none;
+}
+
 #clear-search:hover {
 	text-decoration: none;
 	cursor: pointer;

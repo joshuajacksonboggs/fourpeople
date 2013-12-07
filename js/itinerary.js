@@ -140,6 +140,25 @@ var displayVenue = function(venue) {
 //=============================================================================
 //=============================================================================
 
+$( ".date-picker#date-picker-start" ).datepicker({
+	changeMonth: true,
+	changeYear: true,
+	showButtonPanel: true
+});
+$( ".date-picker#date-picker-end" ).datepicker({
+	changeMonth: true,
+	changeYear: true,
+	showButtonPanel: true
+});
+$(".time-picker#time-picker-start").timePicker({
+	show24Hours: false
+});
+$( ".date-picker#date-picker-end" ).datepicker({
+	changeMonth: true,
+	changeYear: true,
+	showButtonPanel: true
+});
+
 // Hide adding venues div at first
 $("#add-venues-content").hide();
 
@@ -276,7 +295,7 @@ function showResults(venues) {
 		}
 		var id = venues[i].id;
 		$("#search-results").append(buildResultPanel(i, name, address, id));
-		
+	
 		var mapID = 'panel-map-' + i;
 		var lat = venues[i].location.lat;
 		var lng = venues[i].location.lng;
@@ -288,6 +307,7 @@ function showResults(venues) {
 		L.marker([lat, lng]).addTo(map)
 			.bindPopup('Pretty popup. <br> Easily customizable.');
 	}
+
 }
 
 // Builds the panel for a single search result
@@ -367,11 +387,29 @@ $(document).on('click', '.panel-add-button', function(){
 	var venueID = $(event.target).children("span.hidden-venue-id").text();
 	console.log("Venue ID: " + venueID);
 	
-	// create and append tr element before lookup, async call might mess up order
-	var row = $(document.createElement('tr')).attr("id", "tr-" + venueID);
-	$('tbody#venue-table-tbody').append(row);
+	$("#search-results").hide();
+	$("#add-venue-build-controls").show();
 	
-	lookupByID(venueID);
+	$("#add-venue-get-build").click(function(){
+		//TODO: error checking on inputs
+		//TODO: show user feedback
+		
+		// create and append tr element before lookup, async call might mess up order
+		var row = $(document.createElement('tr')).attr("id", "tr-" + venueID);
+		$('tbody#venue-table-tbody').append(row);
+		
+		lookupByID(venueID);
+		
+		//TODO: show complete
+		$("#add-venue-build-controls").hide();
+		$("#search-results").show();
+	});
+	
+	// if click "cancel" just switch view back
+	$("#cancel-add").click(function(){
+		$("#add-venue-build-controls").hide();
+		$("#search-results").show();
+	});
 });
 
 // clears all fields and old search results
@@ -428,7 +466,7 @@ $(document).on('click', '.edit-venue', function(){
 		timeChangeDiv.show();
 		
 		
-		//when click "done" remove element from itinerary and table
+		//when click "delete" remove element from itinerary and table
 		$("#delete-" + thisVenue.id).click(function(){
 			timeChangeDiv.hide();
 			confirmDeleteDiv.show();
@@ -451,7 +489,7 @@ $(document).on('click', '.edit-venue', function(){
 		//when click "done" hide editing areas and show edit button, new time
 		$("#done-" + thisVenue.id).click(function(){
 			timeChangeDiv.hide();
-			timeDisplayDiv.show(); //TODO: UPDATE TIME
+			timeDisplayDiv.show(); //TODO: UPDATE TIME and user feedback
 			editButton.show();
 		});
 	}
