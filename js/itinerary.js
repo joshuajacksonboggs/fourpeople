@@ -27,27 +27,33 @@ var lookup = function(venue) {
 	});
 }
 
-// sort itinerary before display
-itinerary.itinerary.sort(function(a,b) {
-	var dateA = new Date(a.startDate);
-	var dateB = new Date(b.startDate);
-	
-	if(dateA > dateB) 
-		return 1;
-	if(dateA < dateB)
-		return -1;
-	return 0;
-});
-
 // display itinerary on page load
-itinerary.itinerary.forEach(function(venue){
-	// create and append tr element before lookup, async call might mess up order
-	var row = $(document.createElement('tr')).attr("id", "tr-" + venue.id);
-	//var expand = $(document.createElement('tr')).attr("id", "tr-expand-" + venue.id);
+displayAllVenues();
 
-	$('tbody').append(row);
-	lookup(venue);
-});
+function displayAllVenues() {
+	//sort itinerary first
+	itinerary.itinerary.sort(function(a,b) {
+		var dateA = new Date(a.startDate);
+		var dateB = new Date(b.startDate);
+		
+		if(dateA > dateB) 
+			return 1;
+		if(dateA < dateB)
+			return -1;
+		return 0;
+	});
+	//empty table
+	$("#venue-table-tbody").html(" ");
+	//display all venues
+	itinerary.itinerary.forEach(function(venue){
+		// create and append tr element before lookup, async call might mess up order
+		var row = $(document.createElement('tr')).attr("id", "tr-" + venue.id);
+		//var expand = $(document.createElement('tr')).attr("id", "tr-expand-" + venue.id);
+
+		$('tbody').append(row);
+		lookup(venue);
+	});
+}
 
 $('h1#itinerary-title').text(itinerary.name);
 
@@ -283,14 +289,15 @@ var lookupByID = function(venueID) {
 			
 			itinerary.itinerary.push({
 				id: venueID,
-				start: "10:30 AM",
-				end: "12:00 PM",
+				start: "4:30 PM",
+				end: "4:45 PM",
 				date: "July 02, 2013",
+				startDate: "Tue Jul 02 2013 16:30:00 GMT-0400 (Eastern Daylight Time)",
+				endDate: "Tue Jul 02 2013 16:45:00 GMT-0400 (Eastern Daylight Time)",
 				venue: fullVenue
 			});
-			var lastIndex = itinerary.itinerary.length-1;
-			var venueToDisplay = itinerary.itinerary[lastIndex];
-			displayVenue(venueToDisplay);
+			
+			displayAllVenues();
 	});
 }
 
@@ -306,6 +313,7 @@ $(document).on('click', '.panel-add-button', function(){
 	$('tbody#venue-table-tbody').append(row);
 	
 	lookupByID(venueID);
+	
 });
 
 // clears all fields and old search results
