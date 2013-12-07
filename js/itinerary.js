@@ -98,6 +98,7 @@ var displayVenue = function(venue) {
 
 	// time
 	var timeDisplay = $(document.createElement('div')).addClass('timeDisplay').text(venue.start + " - " + venue.end);
+
 	//var startTimeChangeHTML = '<b>Start</b><br>Date: <input type="text" class="date-picker" id="start-date-picker-' + venue.id + '"> Time: <input type="text" class="time-picker" id="start-time-picker-' + venue.id + '"size="10" autocomplete="OFF"><br>';
 	var startTimeChangeHTML = 
 	'<span width="400px;"><b>Start</b></span>' + 
@@ -133,6 +134,18 @@ var displayVenue = function(venue) {
 	buttonGroup.css("margin-top", "10px");
 	var timeChange = $(document.createElement('div')).addClass('timeChange').html(startTimeChangeHTML + endTimeChangeHTML).append(buttonGroup);
 	var timeColumn = $(document.createElement('td')).addClass('time').append(timeDisplay).append(timeChange);
+
+	//var startTimeChangeHTML = '<b>Start</b><br>Date: <input type="text" class="date-picker" id="start-date-picker-' + venue.id + '"> Time: <input type="text" class="time-picker" id="start-time-picker-' + venue.id + '"size="10" autocomplete="OFF"><br>';
+	//var endTimeChangeHTML = '<b>End</b><br>Date: <input type="text" class="date-picker" id="end-date-picker-' + venue.id + '"> Time: <input type="text" class="time-picker" id="end-time-picker-' + venue.id + '"size="10" autocomplete="OFF"><br><br>';
+	var doneButton = '<button class="btn btn-primary btn-sm" id="done-' + venue.id + '">Done editing</button>';
+	var deleteButton = '<button class="btn btn-danger btn-sm" id="delete-' + venue.id + '">Delete venue</button>';
+	var timeChange = $(document.createElement('div')).addClass('timeChange').html(startTimeChangeHTML + endTimeChangeHTML + deleteButton + doneButton);
+	var confirmDeleteHTML = 'Are you sure you want to delete?<br> This cannot be undone.<br><br>' + 
+				'<button class="btn btn-sm btn-danger" id="yes-delete-'+venue.id+'">Yes, delete</button>' + 
+				'<button class="btn btn-sm btn-primary" id="no-cancel-'+venue.id+'">No, cancel</button>';
+	var confirmDelete = $(document.createElement('div')).addClass('confirmDelete').html(confirmDeleteHTML);
+	var timeColumn = $(document.createElement('td')).addClass('time').append(timeDisplay).append(timeChange).append(confirmDelete);
+
 	// map - create and append the element to DOM before Leaflet loads it
 	var map = $(document.createElement('div')).addClass('mini-map').attr('id', 'map' + venue.id);
 	var mapEl = $(document.createElement('td')).append(map);
@@ -142,17 +155,15 @@ var displayVenue = function(venue) {
 
 	// append the icon, venue info, time, and map columns to a row element
 	var row = $(document.getElementById('tr-' + venue.id)).append(iconColumn).append(venueColumn).append(timeColumn).append(mapEl).append(editColumn);
-	$('#start-date-picker-' + venue.id).val(venue.date);
-	console.log(venue.date);
-	/*$( ".date-picker" ).datepicker({
-		changeMonth: true,
-		changeYear: true,
-		showButtonPanel: true
-	});
-	$(".time-picker").timePicker({
-		show24Hours: false
-	});*/
-	console.log(venue.venue.id);
+
+	
+	// prepopulate date/time pickers with current values
+	$("#start-date-picker-" + venue.id).val(getCalendarString(venue.startDate));
+	$("#start-time-picker-" + venue.id).val(getTimeString(venue.startDate));
+	$("#end-date-picker-" + venue.id).val(getCalendarString(venue.endDate));
+	$("#end-time-picker-" + venue.id).val(getTimeString(venue.endDate));
+	
+
 	var leafletMap = L.map('map' + venue.venue.id, {
 		center: [venue.venue.location.lat, venue.venue.location.lng],
 		zoom: 16,
@@ -359,7 +370,36 @@ var lookupByID = function(venueID) {
 				venue: fullVenue
 			});
 			
-			displayAllVenues();
+			addSingleVenue();
+	});
+}
+
+// Takes the new itinerary, sorts it, and displays everything
+function addSingleVenue() {
+	//sort itinerary first
+	itinerary.itinerary.sort(function(a,b) {
+		var dateA = new Date(a.startDate);
+		var dateB = new Date(b.startDate);
+		
+		if(dateA > dateB) 
+			return 1;
+		if(dateA < dateB)
+			return -1;
+		return 0;
+	});
+	
+	// clear out table
+	$("#venue-table-tbody").html(" ");
+	
+	//go through everything in itinerary and re-display
+	itinerary.itinerary.forEach(function(venue){
+		// create and append tr element before lookup, async call might mess up order
+		var row = $(document.createElement('tr')).attr("id", "tr-" + venue.id);
+		//var expand = $(document.createElement('tr')).attr("id", "tr-expand-" + venue.id);
+
+		$('tbody#venue-table-tbody').append(row);
+		
+		displayVenue(venue);
 	});
 }
 
@@ -404,6 +444,7 @@ $(document).on('click', '.edit-venue', function(){
 	var found = false;
 	//grab the venue to edit it
 	while(!found && i < max) {
+		//TODO: error check with dates too in case repeat venues
 		if(itinerary.itinerary[i].venue.id == editID) {
 			//alert("FOUND IT!");
 			thisVenue = itinerary.itinerary[i].venue;
@@ -411,6 +452,7 @@ $(document).on('click', '.edit-venue', function(){
 		}
 		i++;
 	}
+	i--;
 	if(!found) { alert("Sorry, we encountered an error."); }
 	
 	//assuming venue found, show editing areas and detect changes
@@ -420,22 +462,39 @@ $(document).on('click', '.edit-venue', function(){
 		console.log(parentTR);
 		var timeDisplayDiv = parentTR.children('.time').children('.timeDisplay');
 		var timeChangeDiv = parentTR.children('.time').children('.timeChange');
+		var confirmDeleteDiv = parentTR.children('.time').children('.confirmDelete');
 		var editButton = $("#edit-" + thisVenue.id);
 		
 		//hide edit button and current time display, show editing areas
 		editButton.hide();
+
 		//timeDisplayDiv.hide('slow');
 		//timeChangeDiv.show(10000); //TODO: prepopulate with current values
 
 		timeDisplayDiv.hide( 400, function () { 
             timeChangeDiv.show( 400 ); //TODO: prepopulate with current values
         });
+		
 
 		
-		// TODO: delete functionality
 		//when click "done" remove element from itinerary and table
 		$("#delete-" + thisVenue.id).click(function(){
-			alert("Are you sure? (We can't do this yet anyway!)");
+			timeChangeDiv.hide();
+			confirmDeleteDiv.show();
+			
+			$("#no-cancel-" + thisVenue.id).click(function(){
+				confirmDeleteDiv.hide();
+				timeChangeDiv.show();
+			});
+			
+			$("#yes-delete-" + thisVenue.id).click(function() {
+				//remove venue from itinerary
+				itinerary.itinerary.splice(i, 1);
+				//remove venue from display
+				var tbody = document.getElementById("venue-table-tbody");
+				var trChild = document.getElementById("tr-" + thisVenue.id);
+				var throwawayNode = tbody.removeChild(trChild);
+			});
 		});
 		
 		//when click "done" hide editing areas and show edit button, new time
