@@ -90,8 +90,12 @@ var displayVenue = function(venue) {
 	var endTimeChangeHTML = '<b>End</b><br>Date: <input type="text" class="date-picker" id="end-date-picker-' + venue.id + '"> Time: <input type="text" class="time-picker" id="end-time-picker-' + venue.id + '"size="10" autocomplete="OFF"><br><br>';
 	var doneButton = '<button class="btn btn-primary btn-sm" id="done-' + venue.id + '">Done editing</button>';
 	var deleteButton = '<button class="btn btn-danger btn-sm" id="delete-' + venue.id + '">Delete venue</button>';
-	var timeChange = $(document.createElement('div')).addClass('timeChange').html(startTimeChangeHTML + endTimeChangeHTML + doneButton + deleteButton);
-	var timeColumn = $(document.createElement('td')).addClass('time').append(timeDisplay).append(timeChange);
+	var timeChange = $(document.createElement('div')).addClass('timeChange').html(startTimeChangeHTML + endTimeChangeHTML + deleteButton + doneButton);
+	var confirmDeleteHTML = 'Are you sure you want to delete?<br> This cannot be undone.<br><br>' + 
+				'<button class="btn btn-sm btn-danger" id="yes-delete-'+venue.id+'">Yes, delete</button>' + 
+				'<button class="btn btn-sm btn-primary" id="no-cancel-'+venue.id+'">No, cancel</button>';
+	var confirmDelete = $(document.createElement('div')).addClass('confirmDelete').html(confirmDeleteHTML);
+	var timeColumn = $(document.createElement('td')).addClass('time').append(timeDisplay).append(timeChange).append(confirmDelete);
 	// map - create and append the element to DOM before Leaflet loads it
 	var map = $(document.createElement('div')).addClass('mini-map').attr('id', 'map' + venue.venue.id);
 	var mapEl = $(document.createElement('td')).append(map);
@@ -110,6 +114,12 @@ var displayVenue = function(venue) {
 	$(".time-picker").timePicker({
 		show24Hours: false
 	});
+	
+	// prepopulate date/time pickers with current values
+	$("#start-date-picker-" + venue.id).val(getCalendarString(venue.startDate));
+	$("#start-time-picker-" + venue.id).val(getTimeString(venue.startDate));
+	$("#end-date-picker-" + venue.id).val(getCalendarString(venue.endDate));
+	$("#end-time-picker-" + venue.id).val(getTimeString(venue.endDate));
 	
 	var leafletMap = L.map('map' + venue.venue.id, {
 		center: [venue.venue.location.lat, venue.venue.location.lng],
@@ -407,6 +417,7 @@ $(document).on('click', '.edit-venue', function(){
 		console.log(parentTR);
 		var timeDisplayDiv = parentTR.children('.time').children('.timeDisplay');
 		var timeChangeDiv = parentTR.children('.time').children('.timeChange');
+		var confirmDeleteDiv = parentTR.children('.time').children('.confirmDelete');
 		var editButton = $("#edit-" + thisVenue.id);
 		
 		//hide edit button and current time display, show editing areas
@@ -417,7 +428,13 @@ $(document).on('click', '.edit-venue', function(){
 		// TODO: delete functionality
 		//when click "done" remove element from itinerary and table
 		$("#delete-" + thisVenue.id).click(function(){
-			alert("Are you sure? (We can't do this yet anyway!)");
+			timeChangeDiv.hide();
+			confirmDeleteDiv.show();
+			
+			$("#no-cancel-" + thisVenue.id).click(function(){
+				confirmDeleteDiv.hide();
+				timeChangeDiv.show();
+			});
 		});
 		
 		//when click "done" hide editing areas and show edit button, new time
