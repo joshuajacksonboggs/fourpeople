@@ -345,10 +345,14 @@ $("#clear-search").click(function(){
 // Editing current itinerary
 //=============================================================================
 //=============================================================================
+
+//when "edit" button clicked, show edit areas for that venue
 $(document).on('click', '.edit-venue', function(){
+	//get id of venue clicked
 	var editIDfull = $(this).children('button').attr('id');
 	console.log("clicked " + editIDfull);
 	
+	//id in form edit-###, so split at - and take the second part
 	var editParts = editIDfull.split("-");
 	var editID = editParts[1];
 	
@@ -356,6 +360,7 @@ $(document).on('click', '.edit-venue', function(){
 	var i = 0;
 	var max = itinerary.itinerary.length;
 	var found = false;
+	//grab the venue to edit it
 	while(!found && i < max) {
 		if(itinerary.itinerary[i].venue.id == editID) {
 			//alert("FOUND IT!");
@@ -365,23 +370,31 @@ $(document).on('click', '.edit-venue', function(){
 		i++;
 	}
 	if(!found) { alert("Sorry, we encountered an error."); }
+	
+	//assuming venue found, show editing areas and detect changes
 	else {
+		//get the containing tr
 		var parentTR = $("#tr-" + editID);
 		console.log(parentTR);
 		var timeDisplayDiv = parentTR.children('.time').children('.timeDisplay');
 		var timeChangeDiv = parentTR.children('.time').children('.timeChange');
 		var editButton = $("#edit-" + thisVenue.id);
 		
+		//hide edit button and current time display, show editing areas
 		editButton.hide();
 		timeDisplayDiv.hide();
-		timeChangeDiv.show();
+		timeChangeDiv.show(); //TODO: prepopulate with current values
 		
-		var doneID = "done-" + thisVenue.id;
-		var deleteID = "delete-" + thisVenue.id;
+		// TODO: delete functionality
+		//when click "done" remove element from itinerary and table
+		$("#delete-" + thisVenue.id).click(function(){
+			alert("Are you sure? (We can't do this yet anyway!)");
+		});
 		
-		$("#" + doneID).click(function(){
+		//when click "done" hide editing areas and show edit button, new time
+		$("#done-" + thisVenue.id).click(function(){
 			timeChangeDiv.hide();
-			timeDisplayDiv.show();
+			timeDisplayDiv.show(); //TODO: UPDATE TIME
 			editButton.show();
 		});
 	}
