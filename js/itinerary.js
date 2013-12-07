@@ -95,9 +95,12 @@ var displayVenue = function(venue) {
 	// map - create and append the element to DOM before Leaflet loads it
 	var map = $(document.createElement('div')).addClass('mini-map').attr('id', 'map' + venue.venue.id);
 	var mapEl = $(document.createElement('td')).append(map);
+	
+	var editHTML = '<button class="btn btn-primary btn-sm" id="edit-' + venue.id + '">Edit</button>';
+	var editColumn = $(document.createElement('td')).addClass('edit-venue').html(editHTML);
 
 	// append the icon, venue info, time, and map columns to a row element
-	var row = $(document.getElementById('tr-' + venue.id)).append(iconColumn).append(venueColumn).append(timeColumn).append(mapEl);
+	var row = $(document.getElementById('tr-' + venue.id)).append(iconColumn).append(venueColumn).append(timeColumn).append(mapEl).append(editColumn);
 
 	$( ".date-picker" ).datepicker({
 		changeMonth: true,
@@ -340,19 +343,19 @@ $("#clear-search").click(function(){
 // Editing current itinerary
 //=============================================================================
 //=============================================================================
-$(document).on('click', '#venue-table-tbody tr', function(){
-	var trIDfull = $(this).attr('id');
-	console.log("clicked " + trIDfull);
+$(document).on('click', '.edit-venue', function(){
+	var editIDfull = $(this).children('button').attr('id');
+	console.log("clicked " + editIDfull);
 	
-	var trParts = trIDfull.split("-");
-	var trID = trParts[1];
+	var editParts = editIDfull.split("-");
+	var editID = editParts[1];
 	
 	var thisVenue = null;
 	var i = 0;
 	var max = itinerary.itinerary.length;
 	var found = false;
 	while(!found && i < max) {
-		if(itinerary.itinerary[i].venue.id == trID) {
+		if(itinerary.itinerary[i].venue.id == editID) {
 			//alert("FOUND IT!");
 			thisVenue = itinerary.itinerary[i].venue;
 			found = true;
@@ -361,8 +364,23 @@ $(document).on('click', '#venue-table-tbody tr', function(){
 	}
 	if(!found) { alert("Sorry, we encountered an error."); }
 	else {
-		//console.log($(this).children('.time').html());
-		$(this).children('.time').children('.timeDisplay').hide();
-		$(this).children('.time').children('.timeChange').show();
+		var parentTR = $("#tr-" + editID);
+		console.log(parentTR);
+		var timeDisplayDiv = parentTR.children('.time').children('.timeDisplay');
+		var timeChangeDiv = parentTR.children('.time').children('.timeChange');
+		var editButton = $("#edit-" + thisVenue.id);
+		
+		editButton.hide();
+		timeDisplayDiv.hide();
+		timeChangeDiv.show();
+		
+		var doneID = "done-" + thisVenue.id;
+		var deleteID = "delete-" + thisVenue.id;
+		
+		$("#" + doneID).click(function(){
+			timeChangeDiv.hide();
+			timeDisplayDiv.show();
+			editButton.show();
+		});
 	}
 });
