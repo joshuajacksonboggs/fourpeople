@@ -230,6 +230,8 @@ $("#add-venues-content").hide();
 var durLength = 400;
 // When click "Add venues," show search sidebar
 $("#show-add-venues").click(function() {
+	//$('.timeChange').hide();
+	//$('.timeDisplay').show();
 	$("#itinerary-content").animate({
        width: '50%'
     }, { duration: durLength, queue: false });
@@ -359,8 +361,15 @@ function showResults(venues) {
 			address += "<br>Cross Street: " + venues[i].location.crossStreet + "";
 		}
 		var id = venues[i].id;
-		$("#search-results").append(buildResultPanel(i, name, address, id));
-	
+		var category;
+		venues[i].categories.forEach(function(cat) {
+			if (cat.primary) {
+				category = cat;
+			}
+		});
+		
+
+		$("#search-results").append(buildResultPanel(i, name, address, id, category));
 		var mapID = 'panel-map-' + i;
 		var lat = venues[i].location.lat;
 		var lng = venues[i].location.lng;
@@ -372,25 +381,75 @@ function showResults(venues) {
 		L.marker([lat, lng]).addTo(map)
 			.bindPopup('Pretty popup. <br> Easily customizable.');
 	}
+	$('.panel-search-result').on('click', function() {
+		var id = $(this).find('.hidden-venue-id').text();
+		console.log(id);
+		$(this).find('.panel-set-time').toggle(400);
+	});
 
 }
 
 // Builds the panel for a single search result
-function buildResultPanel(number, name, address, id) {
+function buildResultPanel(number, name, address, id, category) {
+	var icon = category.icon.prefix + "bg_88" + category.icon.suffix;
+
+	var startTimeSetHTML = 
+	'<span width="400px;"><b>Start</b></span>' + 
+	'<form class="form-inline" role="form">' + 
+  		'<div class="form-group">' + 
+    		'<label class="sr-only" for="start-date-picker-result-' + number + '">Date</label>' + 
+    		'<input type="date" class="form-control date-picker" id="start-date-picker-result-' + number + '" placeholder="Date">' + 
+  		'</div>' + 
+ 		 '<div class="form-group">' + 
+			'<label class="sr-only" for="start-time-picker-result-' + number + '">Time</label>' + 
+			'<input type="time" class="form-control time-picker" id="start-time-picker-result-' + number + '" placeholder="Time" size="10" autocomplete="OFF">' + 
+  		'</div>' + 
+	'</form>';
+
+	var endTimeSetHTML = 
+	'<span width="400px;"><b>End</b></span>' + 
+	'<form class="form-inline" role="form">' + 
+  		'<div class="form-group">' + 
+    		'<label class="sr-only" for="end-date-picker-result-' + number + '">Date</label>' + 
+    		'<input type="date" class="form-control date-picker" id="end-date-picker-result-' + number + '" placeholder="Date">' + 
+  		'</div>' + 
+ 		 '<div class="form-group">' + 
+			'<label class="sr-only" for="end-time-picker-result-' + number + '">Time</label>' + 
+			'<input type="time" class="form-control time-picker" id="end-time-picker-result-' + number + '" placeholder="Time" size="10" autocomplete="OFF">' + 
+  		'</div>' + 
+	'</form>';
+
 	var html = 
-		'<div class="panel panel-default">' +
-			'<div class="panel-heading">' + 
-              '<h3 class="panel-title">' + name + '</h3>' +
-            '</div>' +
+		'<div class="panel panel-default panel-search-result">' +
             '<div class="panel-body">' +
-              '<div class="panel-text-info">' + address + '</div>' +
-			  '<div class="panel-map" id="panel-map-' + number +'"></div>' +
-			  '<div class="panel-add-button btn btn-lg btn-primary">+<br>Add<br>'+
-			  '<span class="hidden-venue-id">' + id + '</span></div>' +
+            	'<table><tbody>' + 
+            		'<tr>' + 
+            			'<td><img src="' + icon + '" style="padding-right:10px;"></td>' + 
+            			'<td style="width:300px">' +
+            				'<h4 class="list-group-item-heading">'+ name + '</h4>' + 
+            				'<p>' + address + '</p>' + 
+            				'<p>' + category.name + '</p>' + 
+            			'</td>' + 
+            			'<td><div class="panel-map" id="panel-map-' + number +'"></div></td>' + 
+            			
+            		'</tr>' + 
+            	'</tbody></table>' +
             '</div>' +
+            '<div class="panel-set-time style="display:none"><table>' + 
+            	'<tr>' + 
+            		'<td style="width:400px">' + startTimeSetHTML + endTimeSetHTML + '</td>' + 
+            		'<td><div class="panel-add-button btn btn-lg btn-primary">+<br>Add<br>' + 
+            				'<span class="hidden-venue-id">' + id + '</span></div>' +
+            			'</td>' + 
+            	'</tr>' +
+            	
+            	
+            '</table></div>' +
           '</div>';
 	return html;
 }
+
+
 
 // very similar to lookup function, but uses venueID directly
 // TODO: have user select time and date instead of hard-coded
@@ -404,9 +463,6 @@ var lookupByID = function(venueID) {
 			
 			itinerary.itinerary.push({
 				id: venueID,
-				start: "4:30 PM",
-				end: "4:45 PM",
-				date: "July 02, 2013",
 				startDate: "Tue Jul 02 2013 16:30:00 GMT-0400 (Eastern Daylight Time)",
 				endDate: "Tue Jul 02 2013 16:45:00 GMT-0400 (Eastern Daylight Time)",
 				venue: fullVenue
@@ -481,6 +537,8 @@ $(document).on('click', '.panel-add-button', function(){
 $("#clear-search").click(function(){
 	clearOldSearch();
 });
+
+
 
 //=============================================================================
 //=============================================================================
