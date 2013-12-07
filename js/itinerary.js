@@ -148,6 +148,7 @@ $("#show-add-venues").click(function() {
 	$("#itinerary-content").css("border-right", "1px solid #ccc");
 	$("#hide-add-venues").show();
 	$("#show-add-venues").hide();
+	$(".edit-venue").hide();
 });
 
 // When click "Done adding," hide search sidebar
@@ -164,6 +165,7 @@ $("#hide-add-venues").click(function() {
 	$("#itinerary-content").css("border-right", "none");
 	$("#show-add-venues").show();
 	$("#hide-add-venues").hide();
+	$(".edit-venue").show();
 	
 	clearOldSearch();
 	
