@@ -213,3 +213,6 @@ td.icon {
 	text-decoration: none;
 	cursor: pointer;
 }
+.timeChange {
+	display: none;
+}
