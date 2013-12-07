@@ -50,7 +50,8 @@ function displayAllVenues() {
 		var row = $(document.createElement('tr')).attr("id", "tr-" + venue.id);
 		//var expand = $(document.createElement('tr')).attr("id", "tr-expand-" + venue.id);
 
-		$('tbody').append(row);
+		$('tbody#venue-table-tbody').append(row);
+		
 		lookup(venue);
 	});
 }
@@ -84,7 +85,10 @@ var displayVenue = function(venue) {
 	
 	var venueColumn = $(document.createElement('td')).addClass('venue').append(name).append(infoTable);//.append(venueInfo);//.append(categoryLabel);
 	// time
-	var timeColumn = $(document.createElement('td')).addClass('time').text(venue.start + " - " + venue.end);
+	var timeDisplay = $(document.createElement('div')).addClass('timeDisplay').text(venue.start + " - " + venue.end);
+	var timeChangeHTML = 'Date: <input type="text" class="date-picker" id="date-picker-' + venue.id + '"> Time: <input type="text" class="time-picker" id="time-picker-' + venue.id + '"size="10" autocomplete="OFF">';
+	var timeChange = $(document.createElement('div')).addClass('timeChange').html(timeChangeHTML);
+	var timeColumn = $(document.createElement('td')).addClass('time').append(timeDisplay).append(timeChange);
 	// map - create and append the element to DOM before Leaflet loads it
 	var map = $(document.createElement('div')).addClass('mini-map').attr('id', 'map' + venue.venue.id);
 	var mapEl = $(document.createElement('td')).append(map);
@@ -92,6 +96,14 @@ var displayVenue = function(venue) {
 	// append the icon, venue info, time, and map columns to a row element
 	var row = $(document.getElementById('tr-' + venue.id)).append(iconColumn).append(venueColumn).append(timeColumn).append(mapEl);
 
+	$( ".date-picker" ).datepicker({
+		changeMonth: true,
+		changeYear: true,
+		showButtonPanel: true
+	});
+	$(".time-picker").timePicker({
+		show24Hours: false
+	});
 	
 	var leafletMap = L.map('map' + venue.venue.id, {
 		center: [venue.venue.location.lat, venue.venue.location.lng],
@@ -313,10 +325,41 @@ $(document).on('click', '.panel-add-button', function(){
 	$('tbody#venue-table-tbody').append(row);
 	
 	lookupByID(venueID);
-	
 });
 
 // clears all fields and old search results
 $("#clear-search").click(function(){
 	clearOldSearch();
+});
+
+//=============================================================================
+//=============================================================================
+// Editing current itinerary
+//=============================================================================
+//=============================================================================
+$(document).on('click', '#venue-table-tbody tr', function(){
+	var trIDfull = $(this).attr('id');
+	console.log("clicked " + trIDfull);
+	
+	var trParts = trIDfull.split("-");
+	var trID = trParts[1];
+	
+	var thisVenue = null;
+	var i = 0;
+	var max = itinerary.itinerary.length;
+	var found = false;
+	while(!found && i < max) {
+		if(itinerary.itinerary[i].venue.id == trID) {
+			//alert("FOUND IT!");
+			thisVenue = itinerary.itinerary[i].venue;
+			found = true;
+		}
+		i++;
+	}
+	if(!found) { alert("Sorry, we encountered an error."); }
+	else {
+		console.log($(this).children('.time').html());
+		$(this).children('.time').children('.timeDisplay').hide();
+		$(this).children('.time').children('.timeChange').show();
+	}
 });
