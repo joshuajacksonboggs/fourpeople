@@ -97,9 +97,9 @@ var displayVenue = function(venue) {
 	var venueColumn = $(document.createElement('td')).addClass('venue').append(name).append(infoTable);
 
 	// time
-	var timeDisplay = $(document.createElement('div')).addClass('timeDisplay').text(venue.start + " - " + venue.end);
+	var timeDisplay = $(document.createElement('div')).addClass('timeDisplay').text(getDisplayTimeString(venue.startDate) + " - " + getDisplayTimeString(venue.endDate));
 
-	//var startTimeChangeHTML = '<b>Start</b><br>Date: <input type="text" class="date-picker" id="start-date-picker-' + venue.id + '"> Time: <input type="text" class="time-picker" id="start-time-picker-' + venue.id + '"size="10" autocomplete="OFF"><br>';
+	// time change
 	var startTimeChangeHTML = 
 	'<span width="400px;"><b>Start</b></span>' + 
 	'<form class="form-inline" role="form">' + 
@@ -126,20 +126,14 @@ var displayVenue = function(venue) {
   		'</div>' + 
 	'</form>';
 
-	//var startTimeChangeHTML = '<table><tr><td>Date: <input type="text" class="date-picker" id="start-date-picker-' + venue.id + '"></td><td>Time: <input type="text" class="time-picker" id="start-time-picker-' + venue.id + '"size="10" autocomplete="OFF"></td></tr></table>';
-	//var endTimeChangeHTML = '<p><b>End</b></p>Date: <input type="text" class="date-picker" id="end-date-picker-' + venue.id + '"> Time: <input type="text" class="time-picker" id="end-time-picker-' + venue.id + '"size="10" autocomplete="OFF"><br><br>';
+	
 	var doneButton = '<button class="btn btn-primary btn-sm" id="done-' + venue.id + '">Save</button>';
 	var deleteButton = '<button class="btn btn-danger btn-sm" id="delete-' + venue.id + '">Delete</button>';
 	var buttonGroup = $(document.createElement('div')).html(doneButton + deleteButton);
 	buttonGroup.css("margin-top", "10px");
 	var timeChange = $(document.createElement('div')).addClass('timeChange').html(startTimeChangeHTML + endTimeChangeHTML).append(buttonGroup);
-	var timeColumn = $(document.createElement('td')).addClass('time').append(timeDisplay).append(timeChange);
+	//var timeColumn = $(document.createElement('td')).addClass('time').append(timeDisplay).append(timeChange);
 
-	//var startTimeChangeHTML = '<b>Start</b><br>Date: <input type="text" class="date-picker" id="start-date-picker-' + venue.id + '"> Time: <input type="text" class="time-picker" id="start-time-picker-' + venue.id + '"size="10" autocomplete="OFF"><br>';
-	//var endTimeChangeHTML = '<b>End</b><br>Date: <input type="text" class="date-picker" id="end-date-picker-' + venue.id + '"> Time: <input type="text" class="time-picker" id="end-time-picker-' + venue.id + '"size="10" autocomplete="OFF"><br><br>';
-	//var doneButton = '<button class="btn btn-primary btn-sm" id="done-' + venue.id + '">Done editing</button>';
-	//var deleteButton = '<button class="btn btn-danger btn-sm" id="delete-' + venue.id + '">Delete venue</button>';
-	//var timeChange = $(document.createElement('div')).addClass('timeChange').html(startTimeChangeHTML + endTimeChangeHTML + deleteButton + doneButton);
 	var confirmDeleteHTML = 'Are you sure you want to delete?<br> This cannot be undone.<br><br>' + 
 				'<button class="btn btn-sm btn-danger" id="yes-delete-'+venue.id+'">Yes, delete</button>' + 
 				'<button class="btn btn-sm btn-primary" id="no-cancel-'+venue.id+'">No, cancel</button>';
@@ -159,10 +153,9 @@ var displayVenue = function(venue) {
 	
 	// prepopulate date/time pickers with current values
 	$("#start-date-picker-" + venue.id).val(getCalendarString(venue.startDate));
-	console.log(getCalendarString(venue.startDate));
-	$("#start-time-picker-" + venue.id).val(getTimeString(venue.startDate));
+	$("#start-time-picker-" + venue.id).val(getInputTimeString(venue.startDate));
 	$("#end-date-picker-" + venue.id).val(getCalendarString(venue.endDate));
-	$("#end-time-picker-" + venue.id).val(getTimeString(venue.endDate));
+	$("#end-time-picker-" + venue.id).val(getInputTimeString(venue.endDate));
 	
 
 	var leafletMap = L.map('map' + venue.venue.id, {
@@ -545,5 +538,3 @@ $(document).on('click', '.edit-venue', function(){
 		});
 	}
 });
-
-//$(document).on('click')
