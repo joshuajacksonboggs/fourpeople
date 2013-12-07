@@ -401,6 +401,7 @@ $(document).on('click', '.edit-venue', function(){
 	var found = false;
 	//grab the venue to edit it
 	while(!found && i < max) {
+		//TODO: error check with dates too in case repeat venues
 		if(itinerary.itinerary[i].venue.id == editID) {
 			//alert("FOUND IT!");
 			thisVenue = itinerary.itinerary[i].venue;
@@ -408,6 +409,7 @@ $(document).on('click', '.edit-venue', function(){
 		}
 		i++;
 	}
+	i--;
 	if(!found) { alert("Sorry, we encountered an error."); }
 	
 	//assuming venue found, show editing areas and detect changes
@@ -423,9 +425,9 @@ $(document).on('click', '.edit-venue', function(){
 		//hide edit button and current time display, show editing areas
 		editButton.hide();
 		timeDisplayDiv.hide();
-		timeChangeDiv.show(); //TODO: prepopulate with current values
+		timeChangeDiv.show();
 		
-		// TODO: delete functionality
+		
 		//when click "done" remove element from itinerary and table
 		$("#delete-" + thisVenue.id).click(function(){
 			timeChangeDiv.hide();
@@ -434,6 +436,15 @@ $(document).on('click', '.edit-venue', function(){
 			$("#no-cancel-" + thisVenue.id).click(function(){
 				confirmDeleteDiv.hide();
 				timeChangeDiv.show();
+			});
+			
+			$("#yes-delete-" + thisVenue.id).click(function() {
+				//remove venue from itinerary
+				itinerary.itinerary.splice(i, 1);
+				//remove venue from display
+				var tbody = document.getElementById("venue-table-tbody");
+				var trChild = document.getElementById("tr-" + thisVenue.id);
+				var throwawayNode = tbody.removeChild(trChild);
 			});
 		});
 		
