@@ -137,9 +137,9 @@ var displayVenue = function(venue) {
 
 	//var startTimeChangeHTML = '<b>Start</b><br>Date: <input type="text" class="date-picker" id="start-date-picker-' + venue.id + '"> Time: <input type="text" class="time-picker" id="start-time-picker-' + venue.id + '"size="10" autocomplete="OFF"><br>';
 	//var endTimeChangeHTML = '<b>End</b><br>Date: <input type="text" class="date-picker" id="end-date-picker-' + venue.id + '"> Time: <input type="text" class="time-picker" id="end-time-picker-' + venue.id + '"size="10" autocomplete="OFF"><br><br>';
-	var doneButton = '<button class="btn btn-primary btn-sm" id="done-' + venue.id + '">Done editing</button>';
-	var deleteButton = '<button class="btn btn-danger btn-sm" id="delete-' + venue.id + '">Delete venue</button>';
-	var timeChange = $(document.createElement('div')).addClass('timeChange').html(startTimeChangeHTML + endTimeChangeHTML + deleteButton + doneButton);
+	//var doneButton = '<button class="btn btn-primary btn-sm" id="done-' + venue.id + '">Done editing</button>';
+	//var deleteButton = '<button class="btn btn-danger btn-sm" id="delete-' + venue.id + '">Delete venue</button>';
+	//var timeChange = $(document.createElement('div')).addClass('timeChange').html(startTimeChangeHTML + endTimeChangeHTML + deleteButton + doneButton);
 	var confirmDeleteHTML = 'Are you sure you want to delete?<br> This cannot be undone.<br><br>' + 
 				'<button class="btn btn-sm btn-danger" id="yes-delete-'+venue.id+'">Yes, delete</button>' + 
 				'<button class="btn btn-sm btn-primary" id="no-cancel-'+venue.id+'">No, cancel</button>';
@@ -159,6 +159,7 @@ var displayVenue = function(venue) {
 	
 	// prepopulate date/time pickers with current values
 	$("#start-date-picker-" + venue.id).val(getCalendarString(venue.startDate));
+	console.log(getCalendarString(venue.startDate));
 	$("#start-time-picker-" + venue.id).val(getTimeString(venue.startDate));
 	$("#end-date-picker-" + venue.id).val(getCalendarString(venue.endDate));
 	$("#end-time-picker-" + venue.id).val(getTimeString(venue.endDate));
