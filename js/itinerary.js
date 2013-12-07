@@ -11,45 +11,6 @@ var cloudMadeAPIKey = '7da9717aa6e646c2b4d6a6a1fbc94765';
 //=============================================================================
 //=============================================================================
 
-// Dummy London itinerary
-var itinerary = 
-{
-	name: "London",
-	id: 1234,
-	itinerary: [
-		{
-			id: "4ace4417f964a5207bcf20e3",
-			start: "10:30 AM",
-			end: "12:00 PM",
-			date: "July 02, 2013"
-		},
-		{
-			id: "4abe4502f964a520558c20e3",
-			start: "1:00 PM",
-			end: "3:00 PM",
-			date: "July 02, 2013"
-		},
-		{
-			id: "4ac518edf964a520c1ac20e3",
-			start: "3:30 PM",
-			end: "4:15 PM"
-		},
-		{
-			id: "4ac518cdf964a520f2a520e3",
-			start: "5:00 PM",
-			end: "6:30 PM",
-			date: "July 02, 2013"
-		},
-		{
-			id: "4bed4c1e6e8c20a1ae1f7061",
-			start: "7:00 PM",
-			end: "8:30 PM",
-			date: "July 02, 2013"
-		}
-
-	]
-};
-
 var formatVenueLookupURL = function(id) {
 	var URL = baseURL + encodeURIComponent(id) + "?client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET;
 	return URL;
@@ -66,6 +27,19 @@ var lookup = function(venue) {
 	});
 }
 
+// sort itinerary before display
+itinerary.itinerary.sort(function(a,b) {
+	var dateA = new Date(a.startDate);
+	var dateB = new Date(b.startDate);
+	
+	if(dateA > dateB) 
+		return 1;
+	if(dateA < dateB)
+		return -1;
+	return 0;
+});
+
+// display itinerary on page load
 itinerary.itinerary.forEach(function(venue){
 	// create and append tr element before lookup, async call might mess up order
 	var row = $(document.createElement('tr')).attr("id", "tr-" + venue.id);
