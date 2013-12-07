@@ -5,6 +5,34 @@ var CLIENT_ID = "5CYXNIKAOPTKCKIGHNPPJ3DQJBY4IPL0XJL140TLN121U514";
 var CLIENT_SECRET = "RPZTJ5NHBY0L213UKWP3T3DF2QVUXNKMW34FRJOUZFDIFNDM&v=20131124";
 var cloudMadeAPIKey = '7da9717aa6e646c2b4d6a6a1fbc94765';
 
+console.log(itineraries);
+
+//get id from URL
+//split at & if multiple parameters passed; id must be first
+var idEquals = location.search.split("&")[0];
+var itineraryID = parseInt(idEquals.split("=")[1]);
+var n = 0;
+var foundItinerary = false;
+var itinerary = null;
+while(!foundItinerary && n < itineraries.length) {
+	if(itineraries[n].id == itineraryID) {
+		console.log("Itinerary id #" + itineraryID + " found.");
+		itinerary = itineraries[n];
+		foundItinerary = true;
+	}
+	n++;
+}
+
+// TODO
+if(!foundItinerary) {
+	var toDisplay = '<h1>Oops, this is embarrassing!</h1>' + 
+					'<h3>We could not find your itinerary.</h3>' + 
+					'<p>Please make sure your ID is correct or check out ' + 
+					'our <a href="existing-itinerary.html">existing itineraries</a>.</p>';
+	$("#itinerary-content").html(toDisplay);
+	$("#add-venues-content").hide();
+}
+
 //=============================================================================
 //=============================================================================
 // Viewing current itinerary
