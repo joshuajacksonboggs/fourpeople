@@ -9,6 +9,7 @@ console.log(itineraries);
 
 //get id from URL
 //split at & if multiple parameters passed; id must be first
+//TODO: make more robust
 var idEquals = location.search.split("&")[0];
 var itineraryID = parseInt(idEquals.split("=")[1]);
 var n = 0;
@@ -28,7 +29,7 @@ if(!foundItinerary) {
 	var toDisplay = '<h1>Oops, this is embarrassing!</h1>' + 
 					'<h3>We could not find your itinerary.</h3>' + 
 					'<p>Please make sure your ID is correct or check out ' + 
-					'our <a href="existing-itinerary.html">existing itineraries</a>.</p>';
+					'our <a href="existing-itineraries.html">existing itineraries</a>.</p>';
 	$("#itinerary-content").html(toDisplay);
 	$("#add-venues-content").hide();
 }
