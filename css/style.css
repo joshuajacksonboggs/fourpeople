@@ -43,7 +43,7 @@ div.tagline {
 }
 
 .landing div.left{
-	margin-left: 40px;
+	padding-left: 40px;
 	height: 300px;
 	border-right: 1px solid black;
 	padding-right: 10px;
