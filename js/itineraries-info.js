@@ -1,9 +1,11 @@
 // Dummy London itinerary
+var currentID = 3;
+
 var itineraries = 
 [
 	{
 		name: "London",
-		id: 1234,
+		id: 1,
 		itinerary: [
 			{
 				id: "4ace4417f964a5207bcf20e3",
@@ -35,7 +37,7 @@ var itineraries =
 	
 	{
 		name: "New York",
-		id: 1235,
+		id: 2,
 		itinerary: [
 			{
 				id: "4eb13d68e5e8c0f5bd2fd983",
