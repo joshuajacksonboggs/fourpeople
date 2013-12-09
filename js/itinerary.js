@@ -277,9 +277,10 @@ function clearOldSearch() {
 	$("#search-results").html(" ");
 }
 
-// TODO: printer-friendly itinerary version
+// Opens new tab with printer friendly formatting
+// TODO: actually input the venues and times
 $("#printer-view").click(function(){
-	alert("Coming soon :)");
+	window.open('print.html','_blank');
 });
 
 // Gathers parameters and sends search request to Foursquare API
